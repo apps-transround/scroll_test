@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_test/two_way_scroll_widget.dart';
 
 void main() {
   runApp(
@@ -15,131 +16,25 @@ class ScrollTest extends StatelessWidget {
     return MaterialApp(
         // showPerformanceOverlay: true,
         home: Scaffold(
-            appBar: AppBar(
-              title: Text('Two-way scroll 2'),
-            ),
-            body: SingleChildScrollView(
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-                    ...List.generate(
-                      rowCount,
-                      (int i) => Row(children: [
-                        ...List.generate(
-                          columnCount,
-                          (int j) => Container(
-                            width: 100,
-                            height: 80,
-                            child: contentCellBuilder(j, i),
-                          ),
-                        ),
-                      ]),
-                    ),
-                  ])),
-            )));
-/*
-            body: ListView(children: <Widget>[
-              ...List.generate(
-                rowCount,
-                (int i) => SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    ...List.generate(
-                      columnCount,
-                      (int j) => Container(
-                        width: 100,
-                        height: 80,
-                        child: contentCellBuilder(j, i),
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-            ])));
-*/
-  }
-
-  Widget contentCellBuilder(int i, int j) {
-    return Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-// by removing this border, FPS goes up to normal
-          border: Border.all(
-            color: Colors.amber,
-            // left: BorderSide(color: Colors.green),
+      appBar: AppBar(
+        title: Text('Two-way scroll 2'),
+      ),
+      body: Row(
+        // mainAxisSize: MainAxisSize.max,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TwoWayScroll(
+            rowCount: rowCount,
+            columnCount: columnCount,
+            fancy: false,
           ),
-//
-        ),
-        child: Text(
-          'Dummy cell content: $i - $j',
-        ));
-  }
-}
-
-class WebScrollTestNoB extends StatelessWidget {
-  final int rowCount = 90;
-  final int columnCount = 90;
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(
-              title: Text('Two-way scroll'),
-            ),
-            body: SingleChildScrollView(
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-                    ...List.generate(
-                      rowCount,
-                      (int i) => Row(children: [
-                        ...List.generate(
-                          columnCount,
-                          (int j) => Container(
-                            width: 100,
-                            height: 80,
-                            child: contentCellBuilder(j, i),
-                          ),
-                        ),
-                      ]),
-                    ),
-                  ])),
-            )));
-/*
-            body: ListView(children: <Widget>[
-              ...List.generate(
-                rowCount,
-                (int i) => SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    ...List.generate(
-                      columnCount,
-                      (int j) => Container(
-                        width: 100,
-                        height: 80,
-                        child: contentCellBuilder(j, i),
-                      ),
-                    ),
-                  ]),
-                ),
-              ),
-            ])));
-*/
-  }
-
-  Widget contentCellBuilder(int i, int j) {
-    return Container(
-        clipBehavior: Clip.hardEdge,
-        decoration: BoxDecoration(
-// by removing this border, FPS goes up to normal
-//           border: Border(
-//             left: BorderSide(color: Colors.green),
-//           ),
-//
-            ),
-        child: Text(
-          'Dummy cell content: $i - $j',
-        ));
+          TwoWayScroll(
+            rowCount: rowCount,
+            columnCount: columnCount,
+            fancy: true,
+          ),
+        ],
+      ),
+    ));
   }
 }

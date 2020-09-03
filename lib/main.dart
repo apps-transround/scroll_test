@@ -13,9 +13,10 @@ class ScrollTest extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        // showPerformanceOverlay: true,
         home: Scaffold(
             appBar: AppBar(
-              title: Text('Two-way scroll'),
+              title: Text('Two-way scroll 2'),
             ),
             body: SingleChildScrollView(
               child: SingleChildScrollView(
@@ -63,12 +64,12 @@ class ScrollTest extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
 // by removing this border, FPS goes up to normal
-//           border: Border.all(
-//             color: Colors.amber,
-//             // left: BorderSide(color: Colors.green),
-//           ),
+          border: Border.all(
+            color: Colors.amber,
+            // left: BorderSide(color: Colors.green),
+          ),
 //
-            ),
+        ),
         child: Text(
           'Dummy cell content: $i - $j',
         ));

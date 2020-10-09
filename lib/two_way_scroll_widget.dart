@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_test/cell_widget_paint.dart';
 
 import 'cell_widget.dart';
 
@@ -12,29 +13,28 @@ class TwoWayScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ShapesPainter shapesPainter = ShapesPainter();
     return Expanded(
         child: SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
+        ...List.generate(
+          rowCount,
+          (int i) => Row(children: [
             ...List.generate(
-              rowCount,
-              (int i) => Row(children: [
-                ...List.generate(
-                  columnCount,
-                  (int j) => Container(
-                    width: 100,
-                    height: 80,
-                    child: CellWidget(
-                      row: i,
-                      column: j,
-                      fancy: fancy,
-                    ),
-                  ),
-                ),
-              ]),
+              columnCount,
+              (int j) => CellWidgetPaint(
+                // child: CellWidget(
+                // key: Key('i-j'),
+                row: i,
+                column: j,
+                fancy: fancy, shapesPainter: shapesPainter,
+              ),
             ),
-          ])),
+          ]),
+        ),
+      ])),
     ));
     // child: ListView(children: <Widget>[
     //   ...List.generate(

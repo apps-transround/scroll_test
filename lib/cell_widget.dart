@@ -12,11 +12,13 @@ class CellWidget extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
 // by removing this border, FPS goes up to normal
-          color: fancy ? Colors.yellow : null,
+          color: fancy ? Colors.yellow : Colors.grey,
           border: fancy
+              // ? Border.all(
+              //     color: Colors.amber.shade300,
+              //   )
               ? Border(
-                  // color: Colors.amber.shade300,
-                  left: BorderSide(color: Colors.green),
+                  top: BorderSide(),
                 )
               : null,
 //

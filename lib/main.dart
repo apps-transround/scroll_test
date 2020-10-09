@@ -8,8 +8,8 @@ void main() {
 }
 
 class ScrollTest extends StatelessWidget {
-  final int rowCount = 50;
-  final int columnCount = 50;
+  final int rowCount = 40;
+  final int columnCount = 40;
 
   @override
   Widget build(BuildContext context) {

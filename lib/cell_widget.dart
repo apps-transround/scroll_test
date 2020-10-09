@@ -11,17 +11,10 @@ class CellWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-// by removing this border, FPS goes up to normal
           color: fancy ? Colors.yellow : Colors.grey,
-          border: fancy
-              // ? Border.all(
-              //     color: Colors.amber.shade300,
-              //   )
-              ? Border(
-                  top: BorderSide(),
-                )
-              : null,
-//
+          border: Border(
+            top: BorderSide(),
+          ),
         ),
         child: Text(
           'Dummy cell content: $row - $column',

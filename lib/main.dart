@@ -17,21 +17,21 @@ class ScrollTest extends StatelessWidget {
         // showPerformanceOverlay: true,
         home: Scaffold(
       appBar: AppBar(
-        title: Text('Two-way scroll 2'),
+        title: Text('Two-way scroll: right with RepaintBoundary'),
       ),
       body: Row(
-        // mainAxisSize: MainAxisSize.max,
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TwoWayScroll(
             rowCount: rowCount,
             columnCount: columnCount,
             fancy: false,
+            key: Key('left'),
           ),
           TwoWayScroll(
             rowCount: rowCount,
             columnCount: columnCount,
             fancy: true,
+            key: Key('right'),
           ),
         ],
       ),

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_test/cell_widget_paint.dart';
 
-import 'cell_widget.dart';
-
 class TwoWayScroll extends StatelessWidget {
   final Widget child;
   final int rowCount;
@@ -21,43 +19,23 @@ class TwoWayScroll extends StatelessWidget {
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
         ...List.generate(
           rowCount,
-          (int i) => Row(children: [
-            ...List.generate(
-              columnCount,
-              (int j) => CellWidgetPaint(
-                // child: CellWidget(
-                // key: Key('i-j'),
-                row: i,
-                column: j,
-                fancy: fancy, shapesPainter: shapesPainter,
-              ),
-            ),
-          ]),
+          (int i) => fancy
+              ? RepaintBoundary(
+                  key: Key('rp-$i'),
+                  child: generateRow(i),
+                )
+              : generateRow(i),
         ),
       ])),
     ));
-    // child: ListView(children: <Widget>[
-    //   ...List.generate(
-    //     rowCount,
-    //     (int i) => SingleChildScrollView(
-    //       scrollDirection: Axis.horizontal,
-    //       child: Row(children: [
-    //         ...List.generate(
-    //           columnCount,
-    //           (int j) => Container(
-    //             width: 100,
-    //             height: 80,
-    //             child: CellWidget(
-    //               row: i,
-    //               column: j,
-    //               fancy: fancy,
-    //             ),
-    //           ),
-    //         ),
-    //       ]),
-    //     ),
-    //   ),
-    // ]),
-    // );
+  }
+
+  Widget generateRow(int rowNumber) {
+    return Row(children: [
+      ...List.generate(
+        columnCount,
+        (int j) => CellWidgetPaint(row: rowNumber, column: j, fancy: fancy),
+      ),
+    ]);
   }
 }

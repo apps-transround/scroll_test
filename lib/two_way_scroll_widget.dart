@@ -7,7 +7,9 @@ class TwoWayScroll extends StatelessWidget {
   final int columnCount;
   final bool fancy;
 
-  const TwoWayScroll({Key key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy}) : super(key: key);
+  TwoWayScroll({Key key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy, this.scrollController})
+      : super(key: key);
+  final ScrollController scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -16,17 +18,18 @@ class TwoWayScroll extends StatelessWidget {
         child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
+          controller: scrollController,
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-        ...List.generate(
-          rowCount,
-          (int i) => fancy
-              ? RepaintBoundary(
-                  key: Key('rp-$i'),
-                  child: generateRow(i),
-                )
-              : generateRow(i),
-        ),
-      ])),
+            ...List.generate(
+              rowCount,
+              (int i) => fancy
+                  ? RepaintBoundary(
+                      key: Key('rp-$i'),
+                      child: generateRow(i),
+                    )
+                  : generateRow(i),
+            ),
+          ])),
     ));
   }
 

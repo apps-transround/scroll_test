@@ -5,8 +5,8 @@ class CellWidgetPaint extends StatelessWidget {
   final int column;
   final bool fancy;
   final ShapesPainter shapesPainter;
-  final double width = 100;
-  final double height = 80;
+  final double width = 36;
+  final double height = 40;
 
   const CellWidgetPaint({Key key, this.row, this.column, this.fancy, this.shapesPainter}) : super(key: key);
 
@@ -21,7 +21,7 @@ class CellWidgetPaint extends StatelessWidget {
               top: BorderSide(),
             )),
         child: Text(
-          'Dummy cell content: $row - $column',
+          '$row-$column',
           // style: Theme.of(context).textTheme.bodyText2,
         ));
     // return Container(

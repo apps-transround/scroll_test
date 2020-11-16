@@ -74,3 +74,34 @@ class _ScrollTestState extends State<ScrollTest> {
     }
   }
 }
+
+/*
+  static Map<String, num> repaints = Map();
+
+  void paintChild(RenderObject child, Offset offset) {
+    assert(() {
+      if (debugProfilePaintsEnabled)
+        Timeline.startSync('${child.runtimeType}', arguments: timelineArgumentsIndicatingLandmarkEvent);
+      if (debugOnProfilePaint != null)
+        debugOnProfilePaint!(child);
+      return true;
+    }());
+
+    if (child.isRepaintBoundary //|| !(child?._needsPaint ?? true)
+    ) {
+      stopRecordingIfNeeded();
+      _compositeChild(child, offset);
+    } else {
+      String key = '${objectRuntimeType(child, '<optimized out>')} ${shortHash(child)} ${child._needsPaint}'; //#${shortHash(child)}';
+      repaints[key] =  (repaints[key] ?? 0) + 1;
+      child._paintWithContext(this, offset);
+    }
+
+    assert(() {
+      if (debugProfilePaintsEnabled)
+        Timeline.finishSync();
+      return true;
+    }());
+  }
+
+ */

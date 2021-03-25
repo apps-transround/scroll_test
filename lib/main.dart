@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:scroll_test/two_way_scroll_widget.dart';
 
 void main() {
@@ -7,9 +8,19 @@ void main() {
   );
 }
 
-class ScrollTest extends StatelessWidget {
-  final int rowCount = 40;
-  final int columnCount = 40;
+class ScrollTest extends StatefulWidget {
+  @override
+  _ScrollTestState createState() => _ScrollTestState();
+}
+
+class _ScrollTestState extends State<ScrollTest> {
+  final int rowCount = 20;
+
+  final int columnCount = 10;
+
+  ScrollController leftScrollController = ScrollController();
+
+  ScrollController rightScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +28,44 @@ class ScrollTest extends StatelessWidget {
         // showPerformanceOverlay: true,
         home: Scaffold(
       appBar: AppBar(
-        title: Text('Two-way scroll: right with RepaintBoundary'),
+        title: GestureDetector(
+            onTap: () {
+              // print(repaintSkipMap);
+              print(repaintMap.toString().replaceAll(',', '\n'));
+            },
+            child: Row(
+              children: [
+                Text('Two-way scroll: right with RepaintBoundary'),
+                TextButton(
+                    onPressed: () {
+                      iterate(leftScrollController);
+                    },
+                    child: Text(
+                      'left',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                TextButton(
+                    onPressed: () {
+                      iterate(rightScrollController);
+                    },
+                    child: Text(
+                      'right',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+              ],
+            )),
       ),
       body: Row(
         children: [
           TwoWayScroll(
+            scrollController: leftScrollController,
             rowCount: rowCount,
             columnCount: columnCount,
             fancy: false,
             key: Key('left'),
           ),
           TwoWayScroll(
+            scrollController: rightScrollController,
             rowCount: rowCount,
             columnCount: columnCount,
             fancy: true,
@@ -36,5 +74,16 @@ class ScrollTest extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  Future<void> iterate(ScrollController scrollController) async {
+    for (num i = 41; i < 50; i = i + 5) {
+      await scrollController.animateTo(0, duration: Duration(milliseconds: 10), curve: Curves.linear);
+      await Future.delayed(Duration(seconds: 1));
+      repaintMap.clear();
+      await scrollController.animateTo(5 + 0.0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+      print(repaintMap.length);
+      print(repaintMap.toString().replaceAll(',', '\n'));
+    }
   }
 }

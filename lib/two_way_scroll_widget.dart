@@ -6,8 +6,11 @@ class TwoWayScroll extends StatelessWidget {
   final int rowCount;
   final int columnCount;
   final bool fancy;
+  final ScrollController scrollController;
 
-  const TwoWayScroll({Key key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy}) : super(key: key);
+  const TwoWayScroll(
+      {Key key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy, this.scrollController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,26 +19,30 @@ class TwoWayScroll extends StatelessWidget {
         child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
+          controller: scrollController,
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
-        ...List.generate(
-          rowCount,
-          (int i) => fancy
-              ? RepaintBoundary(
-                  key: Key('rp-$i'),
-                  child: generateRow(i),
-                )
-              : generateRow(i),
-        ),
-      ])),
+            ...List.generate(
+              rowCount,
+              (int i) => fancy
+                  ? RepaintBoundary(
+                      key: Key('rp-$i'),
+                      child: generateRow(i),
+                    )
+                  : generateRow(i),
+            ),
+          ])),
     ));
   }
 
   Widget generateRow(int rowNumber) {
-    return Row(children: [
-      ...List.generate(
-        columnCount,
-        (int j) => CellWidgetPaint(row: rowNumber, column: j, fancy: fancy),
-      ),
-    ]);
+    return Row(
+      // key: Key('row-$rowNumber'),
+      children: [
+        ...List.generate(
+          columnCount,
+          (int j) => CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+        ),
+      ],
+    );
   }
 }

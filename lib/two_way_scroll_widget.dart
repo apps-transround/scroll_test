@@ -23,12 +23,14 @@ class TwoWayScroll extends StatelessWidget {
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
             ...List.generate(
               rowCount,
-              (int i) => fancy
-                  ? RepaintBoundary(
-                      key: Key('rp-$i'),
-                      child: generateRow(i),
-                    )
-                  : generateRow(i),
+              (int i) =>
+                  // fancy
+                  //     ? RepaintBoundary(
+                  //         key: Key('rp-$i'),
+                  //         child: generateRow(i),
+                  //       )
+                  //     :
+                  generateRow(i),
             ),
           ])),
     ));
@@ -40,7 +42,12 @@ class TwoWayScroll extends StatelessWidget {
       children: [
         ...List.generate(
           columnCount,
-          (int j) => CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+          (int j) => fancy
+              ? RepaintBoundary(
+                  key: Key('rp$rowNumber-$j'),
+                  child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+                )
+              : CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
         ),
       ],
     );

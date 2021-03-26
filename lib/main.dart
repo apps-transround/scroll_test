@@ -16,7 +16,7 @@ class ScrollTest extends StatefulWidget {
 class _ScrollTestState extends State<ScrollTest> {
   final int rowCount = 20;
 
-  final int columnCount = 10;
+  final int columnCount = 17;
 
   ScrollController leftScrollController = ScrollController();
 
@@ -77,7 +77,7 @@ class _ScrollTestState extends State<ScrollTest> {
   }
 
   Future<void> iterate(ScrollController scrollController) async {
-    for (num i = 41; i < 50; i = i + 5) {
+    for (num i = 1; i < 2; i = i + 1) {
       await scrollController.animateTo(0, duration: Duration(milliseconds: 10), curve: Curves.linear);
       await Future.delayed(Duration(seconds: 1));
       repaintMap.clear();

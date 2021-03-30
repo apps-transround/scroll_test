@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:scroll_test/rotate.dart';
 import 'package:scroll_test/two_way_scroll_widget.dart';
 
 void main() {
   runApp(
-    ScrollTest(),
+    MaterialApp(home: RotateTest()),
   );
 }
 
@@ -13,25 +15,52 @@ class ScrollTest extends StatefulWidget {
 }
 
 class _ScrollTestState extends State<ScrollTest> {
-  int rowCount = 15;
+  final int rowCount = 20;
 
-  int columnCount = 1;
+  final int columnCount = 17;
 
   ScrollController leftScrollController = ScrollController();
 
+  ScrollController rightScrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        // showPerformanceOverlay: true,
-        home: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-            onDoubleTap: () async {},
-            onTap: () async {
-              iterate();
-              // print(PaintingContext.repaints);
+            onTap: () {
+              // print(repaintSkipMap);
+              print(repaintMap.toString().replaceAll(',', '\n'));
             },
-            child: Text('Two-way scroll: right with RepaintBoundary')),
+            child: Row(
+              children: [
+                Text('Two-way scroll: right with RepaintBoundary'),
+                TextButton(
+                    onPressed: () {
+                      iterate(leftScrollController);
+                    },
+                    child: Text(
+                      'left',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                TextButton(
+                    onPressed: () {
+                      iterate(rightScrollController);
+                    },
+                    child: Text(
+                      'right',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => RotateTest()));
+                    },
+                    child: Text(
+                      'rotate',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
+              ],
+            )),
       ),
       body: Row(
         children: [
@@ -42,66 +71,26 @@ class _ScrollTestState extends State<ScrollTest> {
             fancy: false,
             key: Key('left'),
           ),
-          // TwoWayScroll(
-          //   rowCount: rowCount,
-          //   columnCount: columnCount,
-          //   fancy: true,
-          //   key: Key('right'),
-          // ),
+          TwoWayScroll(
+            scrollController: rightScrollController,
+            rowCount: rowCount,
+            columnCount: columnCount,
+            fancy: true,
+            key: Key('right'),
+          ),
         ],
       ),
-    ));
+    );
   }
 
-  Future<void> iterate() async {
-    setState(() {
-      rowCount = 1;
-    });
-    for (num i = 5; i < 50; i = i + 5) {
-      await leftScrollController.animateTo(0, duration: Duration(milliseconds: 10), curve: Curves.linear);
-      setState(() {
-        rowCount = i;
-      });
+  Future<void> iterate(ScrollController scrollController) async {
+    for (num i = 1; i < 2; i = i + 1) {
+      await scrollController.animateTo(0, duration: Duration(milliseconds: 10), curve: Curves.linear);
       await Future.delayed(Duration(seconds: 1));
-      PaintingContext.repaints.clear();
-      await leftScrollController.animateTo(5 + 0.0, duration: Duration(milliseconds: 2000), curve: Curves.linear);
-      num sum = 0;
-      PaintingContext.repaints.forEach((key, value) {
-        sum += value;
-      });
-      // print('$i: ${PaintingContext.repaints['RenderConstrainedBox']} : $sum');
-      print('$i: ${PaintingContext.repaints.length} : ${(sum / 5 / rowCount).round()}  ');
+      repaintMap.clear();
+      await scrollController.animateTo(5 + 0.0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+      print(repaintMap.length);
+      print(repaintMap.toString().replaceAll(',', '\n'));
     }
   }
 }
-
-/*
-  static Map<String, num> repaints = Map();
-
-  void paintChild(RenderObject child, Offset offset) {
-    assert(() {
-      if (debugProfilePaintsEnabled)
-        Timeline.startSync('${child.runtimeType}', arguments: timelineArgumentsIndicatingLandmarkEvent);
-      if (debugOnProfilePaint != null)
-        debugOnProfilePaint!(child);
-      return true;
-    }());
-
-    if (child.isRepaintBoundary //|| !(child?._needsPaint ?? true)
-    ) {
-      stopRecordingIfNeeded();
-      _compositeChild(child, offset);
-    } else {
-      String key = '${objectRuntimeType(child, '<optimized out>')} ${shortHash(child)} ${child._needsPaint}'; //#${shortHash(child)}';
-      repaints[key] =  (repaints[key] ?? 0) + 1;
-      child._paintWithContext(this, offset);
-    }
-
-    assert(() {
-      if (debugProfilePaintsEnabled)
-        Timeline.finishSync();
-      return true;
-    }());
-  }
-
- */

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CellWidget extends StatefulWidget {
-  final int row;
-  final int column;
+  final int? row;
+  final int? column;
   final bool fancy;
 
-  const CellWidget({Key key, this.row, this.column, this.fancy}) : super(key: key);
+  const CellWidget({Key? key, this.row, this.column, this.fancy = true}) : super(key: key);
 
   @override
   _CellWidgetState createState() => _CellWidgetState();

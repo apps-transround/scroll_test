@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:scroll_test/rotate.dart';
 import 'package:scroll_test/two_way_scroll_widget.dart';
 
 void main() {
   runApp(
-    ScrollTest(),
+    MaterialApp(home: RotateTest()),
   );
 }
 
@@ -24,9 +25,7 @@ class _ScrollTestState extends State<ScrollTest> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        // showPerformanceOverlay: true,
-        home: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
             onTap: () {
@@ -52,6 +51,14 @@ class _ScrollTestState extends State<ScrollTest> {
                       'right',
                       style: Theme.of(context).textTheme.bodyText1,
                     )),
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => RotateTest()));
+                    },
+                    child: Text(
+                      'rotate',
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )),
               ],
             )),
       ),
@@ -73,7 +80,7 @@ class _ScrollTestState extends State<ScrollTest> {
           ),
         ],
       ),
-    ));
+    );
   }
 
   Future<void> iterate(ScrollController scrollController) async {

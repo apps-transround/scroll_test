@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class CellWidgetPaint extends StatelessWidget {
-  final int row;
-  final int column;
+  final int? row;
+  final int? column;
   final bool fancy;
-  final ShapesPainter shapesPainter;
+  final ShapesPainter? shapesPainter;
   final double width = 100;
   final double height = 80;
 
-  const CellWidgetPaint({Key key, this.row, this.column, this.fancy, this.shapesPainter}) : super(key: key);
+  const CellWidgetPaint({Key? key, this.row, this.column, this.fancy = true, this.shapesPainter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

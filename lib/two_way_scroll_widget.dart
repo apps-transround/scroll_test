@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:scroll_test/cell_widget_paint.dart';
 
 class TwoWayScroll extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
   final int rowCount;
   final int columnCount;
   final bool fancy;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   const TwoWayScroll(
-      {Key key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy, this.scrollController})
+      {Key? key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy = true, this.scrollController})
       : super(key: key);
 
   @override
@@ -44,7 +44,7 @@ class TwoWayScroll extends StatelessWidget {
           columnCount,
           (int j) => fancy
               ? RepaintBoundary(
-                  key: Key('rp$rowNumber-$j'),
+                  // key: Key('rp$rowNumber-$j'),
                   child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
                 )
               : CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),

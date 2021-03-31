@@ -30,7 +30,7 @@ class _ScrollTestState extends State<ScrollTest> {
         title: GestureDetector(
             onTap: () {
               // print(repaintSkipMap);
-              print(repaintMap.toString().replaceAll(',', '\n'));
+              // print(repaintMap.toString().replaceAll(',', '\n'));
             },
             child: Row(
               children: [
@@ -87,10 +87,10 @@ class _ScrollTestState extends State<ScrollTest> {
     for (num i = 1; i < 2; i = i + 1) {
       await scrollController.animateTo(0, duration: Duration(milliseconds: 10), curve: Curves.linear);
       await Future.delayed(Duration(seconds: 1));
-      repaintMap.clear();
-      await scrollController.animateTo(5 + 0.0, duration: Duration(milliseconds: 200), curve: Curves.linear);
-      print(repaintMap.length);
-      print(repaintMap.toString().replaceAll(',', '\n'));
+      // repaintMap.clear();
+      // await scrollController.animateTo(5 + 0.0, duration: Duration(milliseconds: 200), curve: Curves.linear);
+      // print(repaintMap.length);
+      // print(repaintMap.toString().replaceAll(',', '\n'));
     }
   }
 }

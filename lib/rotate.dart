@@ -33,14 +33,16 @@ class RotateTest extends StatefulWidget {
 /// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 2),
+    duration: const Duration(milliseconds: 300),
     vsync: this,
   );
   // ..repeat(reverse: true);
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
-    curve: Curves.elasticOut,
+    curve: Curves.easeIn,
   );
+
+  EventMode eventMode = EventMode.none;
 
   @override
   void dispose() {
@@ -57,6 +59,9 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
             children: [
               TextButton(
                   onPressed: () {
+                    setState(() {
+                      eventMode = EventMode.record;
+                    });
                     iterate();
                   },
                   child: Text(
@@ -65,12 +70,26 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   )),
               TextButton(
                   onPressed: () {
+                    setState(() {
+                      eventMode = EventMode.playback;
+                      PaintEventHandler.playBack();
+                    });
+                    // var a = context.findRenderObject();
+                    //
+                    // String id =
+                    //     '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')} ${a!.needsCompositing}';
+                    // print(id);
+                  },
+                  child: Text(
+                    'right',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  )),
+              TextButton(
+                  onPressed: () {
+                    setState(() {
+                      eventMode = EventMode.interactive;
+                    });
                     PaintEventHandler.summarize();
-                    var a = context.findRenderObject();
-
-                    String id =
-                        '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')} ${a!.needsCompositing}';
-                    print(id);
                   },
                   child: Text(
                     'right',
@@ -78,18 +97,22 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   )),
             ],
           ),
-          Row(
-            children: [
-              Text('A'),
-            ],
-          ),
-          Row(
-            children: [
-              Text('A'),
-            ],
-          ),
           RepaintBoundary(child: Text('A')),
-          SmartWidget(child: Text('SMArt')),
+          SmartWidget(
+            child: Text('SMArt'),
+            eventMode: eventMode,
+            key: Key('textSmart'),
+          ),
+          SmartWidget(
+            child: Text('SMArt2'),
+            eventMode: eventMode,
+            key: Key('textSmart2'),
+          ),
+          SmartWidget(
+            child: Text('SMArt3'),
+            eventMode: eventMode,
+            key: Key('textSmart3'),
+          ),
           Text('A'),
           Center(
             child: RotationTransition(
@@ -106,10 +129,11 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
   }
 
   Future<void> iterate() async {
-    // PaintEventHandler.reset();
+    PaintEventHandler.reset();
     _controller.reset();
     await _controller.forward();
-
-    PaintEventHandler.dump();
+    print('REEEEADY');
+    // PaintEventHandler.playBack();
+    // PaintEventHandler.dump();
   }
 }

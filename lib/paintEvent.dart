@@ -14,6 +14,7 @@ class PaintEventHandler {
 
   static void reset() {
     paintEvents.clear();
+    // widgetRenderMap.clear();
   }
 
   static void dump() {
@@ -34,12 +35,24 @@ class PaintEventHandler {
     return tmpMap;
   }
 
-  void playBack({Duration interval = const Duration(milliseconds: 300)}) {
+  static Future<void> playBack({Duration interval = const Duration(milliseconds: 3)}) async {
     for (int key in paintEvents.keys.toList()..sort()) {
-      replaySubject.add(paintEvents[key]!);
-      Future.delayed(interval);
+      PaintEvent tmpEvent = paintEvents[key]!;
+      tmpEvent.widgetId ??= widgetRenderMap[tmpEvent.id];
+      if (tmpEvent.widgetId != null) {
+        print('WWWWWWWWWWWWW ${tmpEvent.toString()}');
+      }
+      replaySubject.add(tmpEvent);
+      await Future.delayed(interval);
     }
-    ;
+  }
+
+  static void matchRequest() {
+    replaySubject.add(PaintEvent(eventType: PaintEventType.matchWidget));
+  }
+
+  static void matchOne({required String widgetId, required String renderId}) {
+    widgetRenderMap[renderId] = widgetId;
   }
 
   void dispose() {
@@ -57,5 +70,10 @@ class PaintEvent {
 
   PaintEvent({this.eventType = PaintEventType.none, this.id = 'Unknown', this.widgetId}) {
     timeStamp ??= DateTime.now().microsecondsSinceEpoch;
+  }
+
+  @override
+  String toString() {
+    return 'PaintEvent{eventType: $eventType, id: $id, widgetId: $widgetId, timeStamp: $timeStamp}';
   }
 }

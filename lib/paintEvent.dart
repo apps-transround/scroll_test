@@ -1,11 +1,15 @@
 import 'package:rxdart/rxdart.dart';
 
+enum PlaybackMode { none, run, pause, stop }
+
 class PaintEventHandler {
   static Map<int, PaintEvent> paintEvents = Map();
   static Map<String, String> widgetRenderMap = Map();
   static int scn = 0;
 
   static BehaviorSubject<PaintEvent> replaySubject = BehaviorSubject();
+  static Duration playbackTickle = Duration(milliseconds: 20);
+  static PlaybackMode playbackMode = PlaybackMode.none;
 
   static void logEvent(PaintEvent paintEvent) {
     paintEvents[scn++] = paintEvent;
@@ -29,22 +33,26 @@ class PaintEventHandler {
     Map<String, int> tmpMap = Map();
     paintEvents.forEach((key, value) {
       tmpMap[value.id] = (tmpMap[value.id] ?? 0) + 1;
-      print('${value.timeStamp}: ${value.eventType} ${value.id}');
+      // print('${value.timeStamp}: ${value.eventType} ${value.id}');
     });
     print(tmpMap);
     return tmpMap;
   }
 
-  static Future<void> playBack({Duration interval = const Duration(milliseconds: 3)}) async {
+  static Future<void> playBack({Duration? interval}) async {
+    playbackTickle = interval == null ? playbackTickle : interval;
+    playbackMode = PlaybackMode.run;
     for (int key in paintEvents.keys.toList()..sort()) {
+      if (playbackMode != PlaybackMode.run) break;
       PaintEvent tmpEvent = paintEvents[key]!;
       tmpEvent.widgetId ??= widgetRenderMap[tmpEvent.id];
       if (tmpEvent.widgetId != null) {
-        print('WWWWWWWWWWWWW ${tmpEvent.toString()}');
+        // print('WWWWWWWWWWWWW ${tmpEvent.toString()}');
       }
       replaySubject.add(tmpEvent);
-      await Future.delayed(interval);
+      await Future.delayed(playbackTickle);
     }
+    print('REEEEADY playback');
   }
 
   static void matchRequest() {
@@ -60,7 +68,7 @@ class PaintEventHandler {
   }
 }
 
-enum PaintEventType { markPaintUp, markPaintRoot, markPaintBoundary, paintChild, matchWidget, none }
+enum PaintEventType { markPaintUp, markPaintRoot, markPaintBoundary, paintChild, paintBoundary, matchWidget, none }
 
 class PaintEvent {
   PaintEventType eventType;

@@ -15,7 +15,15 @@ class SmartWidget extends StatefulWidget {
 }
 
 class _SmartWidgetState extends State<SmartWidget> {
+  static const Map<PaintEventType, Color> colorsMap = {
+    PaintEventType.paintChild: Colors.deepOrange,
+    PaintEventType.paintBoundary: Colors.deepPurple,
+    PaintEventType.markPaintBoundary: Colors.blue,
+    PaintEventType.markPaintUp: Colors.amber,
+    PaintEventType.markPaintRoot: Colors.grey,
+  };
   PaintEvent lastEvent = PaintEvent();
+  List<PaintEvent> paintEvents = [];
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +54,7 @@ class _SmartWidgetState extends State<SmartWidget> {
               if (tmpEvent.widgetId == widget.key.toString()) {
                 lastEvent = tmpEvent;
               }
-              print('${tmpEvent.toString()}');
+              // print('${tmpEvent.toString()}');
 
               return Stack(
                 children: [
@@ -54,7 +62,7 @@ class _SmartWidgetState extends State<SmartWidget> {
                   Container(
                     // width: 20,
                     // height: 20,
-                    color: lastEvent.eventType == PaintEventType.markPaintUp ? Colors.red : Colors.blue,
+                    color: colorsMap[tmpEvent.eventType],
                     child: Text(lastEvent.eventType.toString()),
                   )
                 ],

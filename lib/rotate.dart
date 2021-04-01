@@ -33,7 +33,7 @@ class RotateTest extends StatefulWidget {
 /// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 300),
+    duration: const Duration(milliseconds: 30),
     vsync: this,
   );
   // ..repeat(reverse: true);
@@ -114,12 +114,16 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
             key: Key('textSmart3'),
           ),
           Text('A'),
-          Center(
-            child: RotationTransition(
-              turns: _animation,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: FlutterLogo(size: 100.0),
+          SmartWidget(
+            eventMode: eventMode,
+            key: Key('RotateSmart4'),
+            child: Center(
+              child: RotationTransition(
+                turns: _animation,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: FlutterLogo(size: 100.0),
+                ),
               ),
             ),
           ),

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scroll_test/paintEvent.dart';
+import 'package:scroll_test/playback_control.dart';
 import 'package:scroll_test/smart_widget.dart';
 
 void main() => runApp(const MyApp());
@@ -33,7 +34,7 @@ class RotateTest extends StatefulWidget {
 /// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
-    duration: const Duration(milliseconds: 30),
+    duration: const Duration(milliseconds: 300),
     vsync: this,
   );
   // ..repeat(reverse: true);
@@ -41,8 +42,6 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
     parent: _controller,
     curve: Curves.easeIn,
   );
-
-  EventMode eventMode = EventMode.none;
 
   @override
   void dispose() {
@@ -57,37 +56,46 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
         children: [
           Row(
             children: [
+              PlaybackControl(
+                onRecord: () {
+                  setState(() {});
+                  iterate();
+                },
+                onPlay: () {
+                  setState(() {});
+                },
+              ),
+              // TextButton(
+              //     onPressed: () {
+              //       setState(() {
+              //         PaintEventHandler.eventMode = EventMode.record;
+              //       });
+              //       iterate();
+              //     },
+              //     child: Text(
+              //       'right',
+              //       style: Theme.of(context).textTheme.bodyText1,
+              //     )),
+              // TextButton(
+              //     onPressed: () {
+              //       setState(() {
+              //         PaintEventHandler.eventMode = EventMode.playback;
+              //         PaintEventHandler.playBack();
+              //       });
+              //       // var a = context.findRenderObject();
+              //       //
+              //       // String id =
+              //       //     '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')} ${a!.needsCompositing}';
+              //       // print(id);
+              //     },
+              //     child: Text(
+              //       'right',
+              //       style: Theme.of(context).textTheme.bodyText1,
+              //     )),
               TextButton(
                   onPressed: () {
                     setState(() {
-                      eventMode = EventMode.record;
-                    });
-                    iterate();
-                  },
-                  child: Text(
-                    'right',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      eventMode = EventMode.playback;
-                      PaintEventHandler.playBack();
-                    });
-                    // var a = context.findRenderObject();
-                    //
-                    // String id =
-                    //     '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')} ${a!.needsCompositing}';
-                    // print(id);
-                  },
-                  child: Text(
-                    'right',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      eventMode = EventMode.interactive;
+                      PaintEventHandler.eventMode = EventMode.interactive;
                     });
                     PaintEventHandler.summarize();
                   },
@@ -100,22 +108,18 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
           RepaintBoundary(child: Text('A')),
           SmartWidget(
             child: Text('SMArt'),
-            eventMode: eventMode,
             key: Key('textSmart'),
           ),
           SmartWidget(
             child: Text('SMArt2'),
-            eventMode: eventMode,
             key: Key('textSmart2'),
           ),
           SmartWidget(
             child: Text('SMArt3'),
-            eventMode: eventMode,
             key: Key('textSmart3'),
           ),
           Text('A'),
           SmartWidget(
-            eventMode: eventMode,
             key: Key('RotateSmart4'),
             child: Center(
               child: RotationTransition(
@@ -137,6 +141,7 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
     _controller.reset();
     await _controller.forward();
     print('REEEEADY');
+    PaintEventHandler.eventMode = EventMode.none;
     // PaintEventHandler.playBack();
     // PaintEventHandler.dump();
   }

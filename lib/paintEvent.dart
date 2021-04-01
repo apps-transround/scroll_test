@@ -1,18 +1,26 @@
+import 'dart:math';
+
 import 'package:rxdart/rxdart.dart';
 
 enum PlaybackMode { none, run, pause, stop }
+enum EventMode { record, playback, interactive, none }
 
 class PaintEventHandler {
-  static Map<int, PaintEvent> paintEvents = Map();
+  static List<PaintEvent> paintEvents = [];
   static Map<String, String> widgetRenderMap = Map();
   static int scn = 0;
 
   static BehaviorSubject<PaintEvent> replaySubject = BehaviorSubject();
-  static Duration playbackTickle = Duration(milliseconds: 20);
+  static BehaviorSubject<int> replayPositionSubject = BehaviorSubject();
+
+  static double playbackZeitLuppe = 100;
   static PlaybackMode playbackMode = PlaybackMode.none;
+  static EventMode eventMode = EventMode.none;
 
   static void logEvent(PaintEvent paintEvent) {
-    paintEvents[scn++] = paintEvent;
+    if (eventMode == EventMode.record) {
+      paintEvents.add(paintEvent);
+    }
     // print('$scn ${paintEvents.length}');
   }
 
@@ -23,7 +31,7 @@ class PaintEventHandler {
 
   static void dump() {
     print('$scn ${paintEvents.length}');
-    paintEvents.forEach((key, value) {
+    paintEvents.forEach((value) {
       print('${value.timeStamp}: ${value.eventType} ${value.id}');
     });
   }
@@ -31,7 +39,7 @@ class PaintEventHandler {
   static Map<String, int> summarize() {
     print('$scn ${paintEvents.length}');
     Map<String, int> tmpMap = Map();
-    paintEvents.forEach((key, value) {
+    paintEvents.forEach((value) {
       tmpMap[value.id] = (tmpMap[value.id] ?? 0) + 1;
       // print('${value.timeStamp}: ${value.eventType} ${value.id}');
     });
@@ -39,20 +47,30 @@ class PaintEventHandler {
     return tmpMap;
   }
 
-  static Future<void> playBack({Duration? interval}) async {
-    playbackTickle = interval == null ? playbackTickle : interval;
+  static Future<void> playBack({double? zeitLuppe}) async {
+    if (scn == paintEvents.length - 1) {
+      scn = 0;
+    }
+    playbackZeitLuppe = zeitLuppe == null ? playbackZeitLuppe : zeitLuppe;
     playbackMode = PlaybackMode.run;
-    for (int key in paintEvents.keys.toList()..sort()) {
+    for (PaintEvent tmpEvent in paintEvents) {
       if (playbackMode != PlaybackMode.run) break;
-      PaintEvent tmpEvent = paintEvents[key]!;
       tmpEvent.widgetId ??= widgetRenderMap[tmpEvent.id];
-      if (tmpEvent.widgetId != null) {
-        // print('WWWWWWWWWWWWW ${tmpEvent.toString()}');
-      }
       replaySubject.add(tmpEvent);
-      await Future.delayed(playbackTickle);
+      int delta = (scn < paintEvents.length - 1) ? (paintEvents[scn + 1].timeStamp - tmpEvent.timeStamp) : 0;
+      replayPositionSubject.add(scn);
+      if (delta != 0) {
+        await Future.delayed(Duration(microseconds: (delta * playbackZeitLuppe).round()));
+      }
+      scn++;
     }
     print('REEEEADY playback');
+  }
+
+  static void setScn(int newScn) {
+    scn = min(newScn, paintEvents.length - 1);
+    replayPositionSubject.add(scn);
+    replaySubject.add(paintEvents[scn]);
   }
 
   static void matchRequest() {
@@ -65,6 +83,7 @@ class PaintEventHandler {
 
   void dispose() {
     replaySubject.close();
+    replayPositionSubject.close();
   }
 }
 
@@ -74,10 +93,10 @@ class PaintEvent {
   PaintEventType eventType;
   String id;
   String? widgetId;
-  int? timeStamp;
+  late int timeStamp;
 
   PaintEvent({this.eventType = PaintEventType.none, this.id = 'Unknown', this.widgetId}) {
-    timeStamp ??= DateTime.now().microsecondsSinceEpoch;
+    timeStamp = DateTime.now().microsecondsSinceEpoch;
   }
 
   @override

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_test/paintEvent.dart';
 
-enum EventMode { record, playback, interactive, none }
-
 class SmartWidget extends StatefulWidget {
   final Widget child;
-  final EventMode eventMode;
   final Key key;
 
-  const SmartWidget({required this.key, required this.child, this.eventMode = EventMode.record}) : super(key: key);
+  const SmartWidget({required this.key, required this.child}) : super(key: key);
 
   @override
   _SmartWidgetState createState() => _SmartWidgetState();
@@ -27,7 +24,7 @@ class _SmartWidgetState extends State<SmartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    switch (widget.eventMode) {
+    switch (PaintEventHandler.eventMode) {
       case EventMode.interactive:
         return GestureDetector(
           onTap: () {

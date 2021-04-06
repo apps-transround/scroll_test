@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_test/cell_widget_paint.dart';
+import 'package:scroll_test/smart_widget.dart';
 
 class TwoWayScroll extends StatelessWidget {
   final Widget? child;
@@ -16,8 +17,6 @@ class TwoWayScroll extends StatelessWidget {
   Widget build(BuildContext context) {
     ShapesPainter shapesPainter = ShapesPainter();
     return Expanded(
-        child: SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
           controller: scrollController,
           child: Column(mainAxisSize: MainAxisSize.max, children: <Widget>[
@@ -33,23 +32,28 @@ class TwoWayScroll extends StatelessWidget {
                   generateRow(i),
             ),
           ])),
-    ));
+    );
   }
 
   Widget generateRow(int rowNumber) {
-    return Row(
-      // key: Key('row-$rowNumber'),
-      children: [
-        ...List.generate(
-          columnCount,
-          (int j) => fancy
-              ? RepaintBoundary(
-                  // key: Key('rp$rowNumber-$j'),
-                  child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
-                )
-              : CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
-        ),
-      ],
+    return SmartWidget(
+      key: Key('$rowNumber'),
+      child: Row(
+        // key: Key('row-$rowNumber'),
+        children: [
+          ...List.generate(
+            columnCount,
+            (int j) => fancy
+                ? RepaintBoundary(
+                    // key: Key('rp$rowNumber-$j'),
+                    child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+                  )
+                : SmartWidget(
+                    key: Key('$rowNumber-$j'),
+                    child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy)),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -11,11 +11,34 @@ class PaintEventHandler {
   static int scn = 0;
 
   static BehaviorSubject<PaintEvent> replaySubject = BehaviorSubject();
+  static Map<String, BehaviorSubject<PaintEvent>> replaySubjects = Map();
+
   static BehaviorSubject<int> replayPositionSubject = BehaviorSubject();
 
-  static double playbackZeitLuppe = 100;
+  static double playbackZeitLuppe = 50;
   static PlaybackMode playbackMode = PlaybackMode.none;
   static EventMode eventMode = EventMode.none;
+
+  static get minTime {
+    if (paintEvents.length > 0)
+      return paintEvents[0].timeStamp;
+    else
+      return 0;
+  }
+
+  static get maxTime {
+    if (paintEvents.length > 0)
+      return paintEvents.last.timeStamp;
+    else
+      return 1;
+  }
+
+  static get timeRange {
+    if (paintEvents.length > 0)
+      return paintEvents.last.timeStamp - paintEvents[0].timeStamp;
+    else
+      return 1;
+  }
 
   static void logEvent(PaintEvent paintEvent) {
     if (eventMode == EventMode.record) {
@@ -39,30 +62,53 @@ class PaintEventHandler {
   static Map<String, int> summarize() {
     print('$scn ${paintEvents.length}');
     Map<String, int> tmpMap = Map();
+    // paintEvents.forEach((value) {
+    //   tmpMap[value.id] = (tmpMap[value.id] ?? 0) + 1;
+    //   // print('${value.timeStamp}: ${value.eventType} ${value.id}');
+    // });
+    // tmpMap.forEach((key, value) {
+    //   print('$key: $value');
+    // });
+
+    Map<String, int> tmpEventMap = Map();
+    Map<String, List<String>> tmpEventMap2 = Map();
     paintEvents.forEach((value) {
-      tmpMap[value.id] = (tmpMap[value.id] ?? 0) + 1;
+      tmpEventMap[value.eventType.toString()] = (tmpEventMap[value.eventType.toString()] ?? 0) + 1;
+      tmpEventMap2[value.eventType.toString()] ??= [];
+      tmpEventMap2[value.eventType.toString()]!.add(value.id);
       // print('${value.timeStamp}: ${value.eventType} ${value.id}');
     });
-    print(tmpMap);
+    tmpEventMap.forEach((key, value) {
+      // if (key == PaintEventType.markPaintUp.toString())
+      print('$key: $value');
+    });
+    tmpEventMap2.forEach((key, value) {
+      if (key == PaintEventType.markPaintBoundary.toString()) print('$key: $value');
+    });
+    // print(tmpMap);
     return tmpMap;
   }
 
   static Future<void> playBack({double? zeitLuppe}) async {
-    if (scn == paintEvents.length - 1) {
+    if (scn == timeRange) {
       scn = 0;
     }
     playbackZeitLuppe = zeitLuppe == null ? playbackZeitLuppe : zeitLuppe;
     playbackMode = PlaybackMode.run;
+    int pos = 0;
     for (PaintEvent tmpEvent in paintEvents) {
       if (playbackMode != PlaybackMode.run) break;
       tmpEvent.widgetId ??= widgetRenderMap[tmpEvent.id];
-      replaySubject.add(tmpEvent);
-      int delta = (scn < paintEvents.length - 1) ? (paintEvents[scn + 1].timeStamp - tmpEvent.timeStamp) : 0;
-      replayPositionSubject.add(scn);
+
+      replaySubjects[tmpEvent.widgetId]?.add(tmpEvent);
+      // replaySubject.add(tmpEvent);
+      int delta = (scn < timeRange) ? (paintEvents[pos + 1].timeStamp - tmpEvent.timeStamp) : 0;
       if (delta != 0) {
+        replayPositionSubject.add(scn);
         await Future.delayed(Duration(microseconds: (delta * playbackZeitLuppe).round()));
+        scn = scn + delta;
       }
-      scn++;
+      pos++;
     }
     print('REEEEADY playback');
   }
@@ -79,6 +125,7 @@ class PaintEventHandler {
 
   static void matchOne({required String widgetId, required String renderId}) {
     widgetRenderMap[renderId] = widgetId;
+    replaySubjects[widgetId] = BehaviorSubject<PaintEvent>();
   }
 
   void dispose() {

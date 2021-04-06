@@ -51,12 +51,14 @@ class _PlaybackControlState extends State<PlaybackControl> {
         StreamBuilder<int>(
             stream: PaintEventHandler.replayPositionSubject,
             builder: (context, snapshot) {
+              double value = (snapshot.data ?? 0) + 0.0;
+              if (value > PaintEventHandler.timeRange + 1.0) value = 0;
               return Row(
                 children: [
                   Slider(
-                      value: (snapshot.data ?? 0) + 0.0,
+                      value: value,
                       min: 0,
-                      max: PaintEventHandler.paintEvents.length + 1.0,
+                      max: PaintEventHandler.timeRange + 1.0,
                       // divisions: 5,
                       label: 'a',
                       onChanged: (v) {
@@ -66,9 +68,14 @@ class _PlaybackControlState extends State<PlaybackControl> {
                           // PaintEventHandler.playbackZeitLuppe = v;
                         });
                       }),
-                  Text('${(snapshot.data ?? 0) + 0.0}')
+                  Text('${((snapshot.data ?? 0) / 1000).truncate()} ms')
                 ],
               );
+            }),
+        IconButton(
+            icon: Icon(Icons.list),
+            onPressed: () {
+              PaintEventHandler.summarize();
             }),
       ],
     );

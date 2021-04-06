@@ -1,70 +1,112 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_test/paintEvent.dart';
 
-class SmartWidget extends StatefulWidget {
+const Map<PaintEventType, Color> colorsMap = {
+  PaintEventType.paintChild: Colors.deepOrange,
+  PaintEventType.paintBoundary: Colors.deepPurple,
+  PaintEventType.markPaintBoundary: Colors.blue,
+  PaintEventType.markPaintUp: Colors.amber,
+  PaintEventType.markPaintRoot: Colors.grey,
+};
+
+class SmartWidget extends StatelessWidget {
   final Widget child;
   final Key key;
 
-  const SmartWidget({required this.key, required this.child}) : super(key: key);
+  SmartWidget({required this.key, required this.child}) : super(key: key);
 
-  @override
-  _SmartWidgetState createState() => _SmartWidgetState();
-}
-
-class _SmartWidgetState extends State<SmartWidget> {
-  static const Map<PaintEventType, Color> colorsMap = {
-    PaintEventType.paintChild: Colors.deepOrange,
-    PaintEventType.paintBoundary: Colors.deepPurple,
-    PaintEventType.markPaintBoundary: Colors.blue,
-    PaintEventType.markPaintUp: Colors.amber,
-    PaintEventType.markPaintRoot: Colors.grey,
-  };
   PaintEvent lastEvent = PaintEvent();
   List<PaintEvent> paintEvents = [];
+  int highestPlayed = 0;
+  late String id = key.toString();
 
   @override
   Widget build(BuildContext context) {
     switch (PaintEventHandler.eventMode) {
       case EventMode.interactive:
-        return GestureDetector(
-          onTap: () {
-            print(context.findRenderObject()!.toStringShort());
-          },
-          child: widget.child,
-        );
-
-      case EventMode.record:
       case EventMode.none:
+      // return GestureDetector(
+      //   onTap: () {
+      //     print(paintEvents);
+      //     print(context.findRenderObject()!.toStringShort());
+      //   },
+      //   child: child,
+      // );
+      //
+      case EventMode.record:
+        paintEvents.clear();
+        highestPlayed = 0;
         Future.delayed(Duration(seconds: 1), () {
           var a = context.findRenderObject();
           // String id = '${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')}';
           String id = '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')}';
-          PaintEventHandler.matchOne(widgetId: widget.key.toString(), renderId: id);
-          print('$id: ${widget.key.toString()}');
+          PaintEventHandler.matchOne(widgetId: key.toString(), renderId: id);
+          print('$id: ${key.toString()}');
         });
-        return Container(child: widget.child);
+        return child;
       case EventMode.playback:
         return StreamBuilder<PaintEvent>(
-            stream: PaintEventHandler.replaySubject,
+            stream: PaintEventHandler.replaySubjects[id],
             builder: (context, snapshot) {
               PaintEvent tmpEvent = snapshot.data ?? PaintEvent();
-              if (tmpEvent.widgetId == widget.key.toString()) {
+              if (tmpEvent.widgetId == key.toString()) {
                 lastEvent = tmpEvent;
+                if (highestPlayed < tmpEvent.timeStamp) {
+                  paintEvents.add(tmpEvent);
+                  highestPlayed = tmpEvent.timeStamp;
+                }
               }
               // print('${tmpEvent.toString()}');
 
-              return Stack(
+              return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  widget.child,
-                  Container(
-                    // width: 20,
-                    // height: 20,
-                    color: colorsMap[tmpEvent.eventType],
-                    child: Text(lastEvent.eventType.toString()),
-                  )
+                  child,
+                  // Container(
+                  //   constraints: BoxConstraints(
+                  //     minHeight: 20,
+                  //     minWidth: 20,
+                  //   ),
+                  //   child: child,
+                  // ),
+                  CustomPaint(
+                    size: Size(100, 40),
+                    painter: PaintMarker(paintEvents: paintEvents),
+                  ),
+                  // Container(
+                  //   // width: 20,
+                  //   // height: 20,
+                  //   color: colorsMap[lastEvent.eventType],
+                  //   // child: Text(lastEvent.eventType.toString()),
+                  // )
                 ],
               );
             });
     }
+  }
+}
+
+class PaintMarker extends CustomPainter {
+  final List<PaintEvent> paintEvents;
+
+  const PaintMarker({Key? key, required this.paintEvents});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    int i = 0;
+    paintEvents.forEach((element) {
+      final p1 = Offset(i * 5, 0);
+      final p2 = Offset(i * 5, 20);
+      final paint = Paint()
+        ..color = colorsMap[element.eventType] ?? Colors.red
+        ..strokeWidth = 4;
+      canvas.drawLine(p1, p2, paint);
+      i++;
+    });
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return true;
   }
 }

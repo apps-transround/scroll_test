@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scroll_test/smart_widget.dart';
 
 class CellWidgetPaint extends StatelessWidget {
   final int? row;
@@ -12,18 +13,24 @@ class CellWidgetPaint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-            color: fancy ? Colors.green.shade100 : Colors.red.shade100,
-            border: Border(
-              top: BorderSide(),
-            )),
-        child: Text(
-          'Dummy cell content: $row - $column',
-          // style: Theme.of(context).textTheme.bodyText2,
-        ));
+    return SmartWidget(
+      key: Key('cont$row - $column'),
+      child: Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+              color: fancy ? Colors.green.shade100 : Colors.red.shade100,
+              border: Border(
+                top: BorderSide(),
+              )),
+          child: SmartWidget(
+            key: Key('$row - $column'),
+            child: Text(
+              'Dummy cell content: $row - $column',
+              // style: Theme.of(context).textTheme.bodyText2,
+            ),
+          )),
+    );
     // return Container(
     //   width: width,
     //   height: height,

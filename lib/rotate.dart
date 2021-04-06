@@ -11,12 +11,10 @@ void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const String _title = 'Flutter Code Sample';
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      title: _title,
+      title: 'Paint recorder',
       home: RotateTest(),
     );
   }
@@ -65,33 +63,6 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
-              // TextButton(
-              //     onPressed: () {
-              //       setState(() {
-              //         PaintEventHandler.eventMode = EventMode.record;
-              //       });
-              //       iterate();
-              //     },
-              //     child: Text(
-              //       'right',
-              //       style: Theme.of(context).textTheme.bodyText1,
-              //     )),
-              // TextButton(
-              //     onPressed: () {
-              //       setState(() {
-              //         PaintEventHandler.eventMode = EventMode.playback;
-              //         PaintEventHandler.playBack();
-              //       });
-              //       // var a = context.findRenderObject();
-              //       //
-              //       // String id =
-              //       //     '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')} ${a!.needsCompositing}';
-              //       // print(id);
-              //     },
-              //     child: Text(
-              //       'right',
-              //       style: Theme.of(context).textTheme.bodyText1,
-              //     )),
               TextButton(
                   onPressed: () {
                     setState(() {

@@ -41,7 +41,7 @@ class SmartWidget extends StatelessWidget {
           // String id = '${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')}';
           String id = '${a.runtimeType} ${a.hashCode.toUnsigned(20).toRadixString(16).padLeft(5, '0')}';
           PaintEventHandler.matchOne(widgetId: key.toString(), renderId: id);
-          print('$id: ${key.toString()}');
+          // print('$id: ${key.toString()}');
         });
         return child;
       case EventMode.playback:

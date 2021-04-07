@@ -63,17 +63,6 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      PaintEventHandler.eventMode = EventMode.interactive;
-                    });
-                    PaintEventHandler.summarize();
-                  },
-                  child: Text(
-                    'right',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
             ],
           ),
           RepaintBoundary(child: Text('A')),

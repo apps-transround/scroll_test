@@ -2159,13 +2159,19 @@
 //   ///    dirty.
 //
 //
-//   static const int keepPaint = 8;
-//   List<PaintEvent> paintEvents = [].length(keepPaint);
+//   static const int keepPaint = 24;
+//   List<PaintEvent> paintEvents = [];
+//
+//   Map<PaintEventType, int> eventssMap = {
+//   };
 //
 //   void logEvent(PaintEvent paintEvent) {
 //     if (debugRepaintRainbowEnabled) {
 //       paintEvents.add(paintEvent);
-//
+//       if (paintEvents.length > keepPaint) {
+//         paintEvents.removeAt(0);
+//       }
+//       eventssMap[paintEvent.eventType] = (eventssMap[paintEvent.eventType] ?? 0) + 1;
 //     }
 //     // print('$scn ${paintEvents.length}');
 //   }
@@ -2379,23 +2385,43 @@
 //     }());
 //   }
 //
-//
+//   double delta = 0;
 //   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
 //     int i = 0;
 //     paintEvents.forEach((element) {
-//       final p1 = Offset(i * 5, 0);
-//       final p2 = Offset(i * 5, 20);
+//       final p1 = Offset(i * 5+ delta, 0 );
+//       final p2 = Offset(i * 5+ delta, 20);
 //       final paint = Paint()
 //         ..color = colorsMap[element.eventType] ?? Color(0xFFFF0000)
 //         ..strokeWidth = 4;
-//       context.canvas.drawLine(p1, p2, paint);
+//       context.canvas.drawLine(offset + p1, offset + p2, paint);
 //       i++;
-//
 //     });
-//     //   final Paint paint = Paint()
+//     // i = 0;
+//     // eventssMap.forEach((key, value) {
+//     //   final textStyle = TextStyle(
+//     //     color: colorsMap[key] ?? Color(0xFFFF0000),
+//     //     fontSize: 16,
+//     //   );
+//     //   final textSpan = TextSpan(
+//     //     text: '${key.toString().split('.').last.substring(0, 4)}: ${value.toString()}',
+//     //     style: textStyle,
+//     //   );
+//     //   final textPainter = TextPainter(
+//     //     text: textSpan,
+//     //     textDirection: TextDirection.ltr,
+//     //   );
+//     //   textPainter.layout(
+//     //     minWidth: 0,
+//     //     maxWidth: 80,
+//     //   );
+//     //   final offset = Offset(i * 80, 0);
+//     //   textPainter.paint(context.canvas, offset);
+//     //   i++;
+//     // }); //   final Paint paint = Paint()
 //     //   ..color = Color(0x00BBBB | ((0x04000000 * depth) & 0xFF000000));
 //     // context.canvas.drawRect(offset & size, paint);
-//
+//     delta= (delta +1) % 8;
 //   }
 //
 //
@@ -2407,8 +2433,7 @@
 //   Rect get paintBounds;
 //
 //   /// Override this method to paint debugging information.
-//   void debugPaint(PaintingContext context, Offset offset)
-//   {}
+//   void debugPaint(PaintingContext context, Offset offset) {}
 //
 //   /// Paint this render object into the given context at the given offset.
 //   ///
@@ -3046,13 +3071,11 @@
 // mixin RenderObjectWithChildMixin
 //
 // <
-//
 // ChildType
 //
 // extends
 //
 // RenderObject
-//
 // >
 //
 // on RenderObject

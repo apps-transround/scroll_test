@@ -2,8 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scroll_test/paintEvent.dart';
-import 'package:scroll_test/playback_control.dart';
-import 'package:scroll_test/smart_widget.dart';
 
 void main() => runApp(const MyApp());
 
@@ -35,9 +33,20 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
     duration: const Duration(milliseconds: 300),
     vsync: this,
   );
+
   // ..repeat(reverse: true);
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
+    curve: Curves.easeIn,
+  );
+  late final AnimationController _controller2 = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+
+  // ..repeat(reverse: true);
+  late final Animation<double> _animation2 = CurvedAnimation(
+    parent: _controller2,
     curve: Curves.easeIn,
   );
 
@@ -52,31 +61,64 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
     return Scaffold(
       body: Column(
         children: [
-          Row(
-            children: [
-              PlaybackControl(
-                onRecord: () {
-                  setState(() {});
-                  iterate();
-                },
-                onPlay: () {
-                  setState(() {});
-                },
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     PlaybackControl(
+          //       onRecord: () {
+          //         setState(() {});
+          //         iterate();
+          //       },
+          //       onPlay: () {
+          //         setState(() {});
+          //       },
+          //     ),
+          //   ],
+          // ),
           RepaintBoundary(child: Text('A')),
-          Text('SMArt'),
-          Text('SMArt2'),
-          Text('SMArt3'),
-          Text('A'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('SMArt'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('A'),
+          ),
           Center(
             child: RepaintBoundary(
-              child: RotationTransition(
-                turns: _animation,
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: FlutterLogo(size: 100.0),
+              child: GestureDetector(
+                onTap: () {
+                  _controller.reset();
+                  _controller.forward();
+                },
+                child: SizedBox(
+                  width: 300,
+                  height: 300,
+                  child: RotationTransition(
+                    turns: _animation,
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: FlutterLogo(size: 100.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              width: 300,
+              height: 300,
+              child: GestureDetector(
+                onTap: () {
+                  _controller2.reset();
+                  _controller2.forward();
+                },
+                child: RotationTransition(
+                  turns: _animation2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: FlutterLogo(size: 100.0),
+                  ),
                 ),
               ),
             ),

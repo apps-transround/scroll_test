@@ -1,9 +1,19 @@
 import 'dart:math';
+import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 enum PlaybackMode { none, run, pause, stop }
 enum EventMode { record, playback, interactive, none }
+
+const Map<PaintEventType, Color> colorsMap = {
+  PaintEventType.paintChild: Colors.deepOrange,
+  PaintEventType.paintBoundary: Colors.deepPurple,
+  PaintEventType.markPaintBoundary: Colors.blue,
+  PaintEventType.markPaintUp: Colors.amber,
+  PaintEventType.markPaintRoot: Colors.grey,
+};
 
 class PaintEventHandler {
   static List<PaintEvent> paintEvents = [];

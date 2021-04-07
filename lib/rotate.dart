@@ -63,36 +63,15 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   setState(() {});
                 },
               ),
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      PaintEventHandler.eventMode = EventMode.interactive;
-                    });
-                    PaintEventHandler.summarize();
-                  },
-                  child: Text(
-                    'right',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  )),
             ],
           ),
           RepaintBoundary(child: Text('A')),
-          SmartWidget(
-            child: Text('SMArt'),
-            key: Key('textSmart'),
-          ),
-          SmartWidget(
-            child: Text('SMArt2'),
-            key: Key('textSmart2'),
-          ),
-          SmartWidget(
-            child: Text('SMArt3'),
-            key: Key('textSmart3'),
-          ),
+          Text('SMArt'),
+          Text('SMArt2'),
+          Text('SMArt3'),
           Text('A'),
-          SmartWidget(
-            key: Key('RotateSmart4'),
-            child: Center(
+          Center(
+            child: RepaintBoundary(
               child: RotationTransition(
                 turns: _animation,
                 child: const Padding(

@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scroll_test/paintEvent.dart';
 
-const Map<PaintEventType, Color> colorsMap = {
-  PaintEventType.paintChild: Colors.deepOrange,
-  PaintEventType.paintBoundary: Colors.deepPurple,
-  PaintEventType.markPaintBoundary: Colors.blue,
-  PaintEventType.markPaintUp: Colors.amber,
-  PaintEventType.markPaintRoot: Colors.grey,
-};
-
 class SmartWidget extends StatelessWidget {
   final Widget child;
   final Key key;

@@ -17,6 +17,7 @@
 // import 'binding.dart';
 // import 'debug.dart';
 // import 'layer.dart';
+// import 'proxy_box.dart';
 //
 // export 'package:flutter/foundation.dart'
 //     show FlutterError, InformationCollector, DiagnosticsNode, ErrorSummary, ErrorDescription, ErrorHint, DiagnosticsProperty, StringProperty, DoubleProperty, EnumProperty, FlagProperty, IntProperty, DiagnosticPropertiesBuilder;
@@ -2397,6 +2398,8 @@
 //       context.canvas.drawLine(offset + p1, offset + p2, paint);
 //       i++;
 //     });
+//     if (this is RenderRepaintBoundary)
+//       print ((this as RenderRepaintBoundary).debugAsymmetricPaintCount);
 //     // i = 0;
 //     // eventssMap.forEach((key, value) {
 //     //   final textStyle = TextStyle(
@@ -2421,7 +2424,7 @@
 //     // }); //   final Paint paint = Paint()
 //     //   ..color = Color(0x00BBBB | ((0x04000000 * depth) & 0xFF000000));
 //     // context.canvas.drawRect(offset & size, paint);
-//     delta= (delta +1) % 8;
+//     delta= delta == 0 ? 8 : delta -1;
 //   }
 //
 //
@@ -4091,3 +4094,4 @@
 //         level: DiagnosticLevel.hidden,
 //       );
 // }
+// //

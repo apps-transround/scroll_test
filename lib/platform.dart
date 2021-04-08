@@ -2376,10 +2376,10 @@
 //     } catch (e, stack) {
 //       _debugReportException('paint', e, stack);
 //     }
+//     if (debugRepaintRainbowEnabled)
+//       debugPaintPaintInfo(context, offset);
 //     assert(() {
 //       debugPaint(context, offset);
-//       if (debugRepaintRainbowEnabled)
-//         debugPaintPaintInfo(context, offset);
 //       _debugActivePaint = debugLastActivePaint;
 //       _debugDoingThisPaint = false;
 //       return true;
@@ -2391,15 +2391,37 @@
 //     int i = 0;
 //     paintEvents.forEach((element) {
 //       final p1 = Offset(i * 5+ delta, 0 );
-//       final p2 = Offset(i * 5+ delta, 20);
+//       final p2 = Offset(i * 5+ delta, 4);
 //       final paint = Paint()
 //         ..color = colorsMap[element.eventType] ?? Color(0xFFFF0000)
 //         ..strokeWidth = 4;
 //       context.canvas.drawLine(offset + p1, offset + p2, paint);
 //       i++;
 //     });
-//     if (this is RenderRepaintBoundary)
-//       print ((this as RenderRepaintBoundary).debugAsymmetricPaintCount);
+//     if (this is RenderRepaintBoundary) {
+//       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount +1;
+//       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount+1;
+//       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
+//       final textStyle = TextStyle(
+//         color: judgementColorMap[fraction] ?? Color(0xFFFF0000),
+//         fontSize: 16,
+//       );
+//       final textSpan = TextSpan(
+//         text: '$asymPC / $symPC',
+//         style: textStyle,
+//       );
+//       final textPainter = TextPainter(
+//         text: textSpan,
+//         textDirection: TextDirection.ltr,
+//       );
+//       textPainter.layout(
+//         minWidth: 0,
+//         maxWidth: 80,
+//       );
+//       textPainter.paint(context.canvas,       this.paintBounds.topRight
+//       );
+//
+//     }
 //     // i = 0;
 //     // eventssMap.forEach((key, value) {
 //     //   final textStyle = TextStyle(

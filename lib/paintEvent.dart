@@ -15,6 +15,14 @@ const Map<PaintEventType, Color> colorsMap = {
   PaintEventType.markPaintRoot: Colors.grey,
 };
 
+const Map<int, Color> judgementColorMap = {
+  1: Colors.deepOrange,
+  3: Colors.deepPurple,
+  4: Colors.blue,
+  5: Colors.amber,
+  9: Colors.green,
+};
+
 class PaintEventHandler {
   static List<PaintEvent> paintEvents = [];
   static Map<String, String> widgetRenderMap = Map();

@@ -1,7 +1,6 @@
 /// Flutter code sample for RotationTransition
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:scroll_test/demo_control.dart';
 import 'package:scroll_test/paintEvent.dart';
 
 void main() => runApp(const MyApp());
@@ -14,22 +13,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Paint recorder',
-      home: RotateTest(),
+      home: RainbowShamer(),
     );
   }
 }
 
 /// This is the stateful widget that the main application instantiates.
-class RotateTest extends StatefulWidget {
-  const RotateTest({Key? key}) : super(key: key);
+class RainbowShamer extends StatefulWidget {
+  const RainbowShamer({Key? key}) : super(key: key);
 
   @override
-  _RotateTestState createState() => _RotateTestState();
+  _RainbowShamerState createState() => _RainbowShamerState();
 }
 
 /// This is the private State class that goes with MyStatefulWidget.
 /// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
-class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
+class _RainbowShamerState extends State<RainbowShamer> with TickerProviderStateMixin {
   late final AnimationController _controller = AnimationController(
     duration: const Duration(milliseconds: 300),
     vsync: this,
@@ -75,32 +74,28 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
           //     ),
           //   ],
           // ),
-          DemoControl(),
-          RepaintBoundary(child: Text('A')),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text('SMArt'),
+            child: Text('Rotating animation'),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('A'),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(8.0),
+          //   child: Text('A'),
+          // ),
           Center(
-            child: RepaintBoundary(
-              child: GestureDetector(
-                onTap: () {
-                  _controller.reset();
-                  _controller.forward();
-                },
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: RotationTransition(
-                    turns: _animation,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: FlutterLogo(size: 100.0),
-                    ),
+            child: GestureDetector(
+              onTap: () {
+                _controller.reset();
+                _controller.forward();
+              },
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: RotationTransition(
+                  turns: _animation,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: FlutterLogo(size: 100.0),
                   ),
                 ),
               ),

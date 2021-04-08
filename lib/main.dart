@@ -5,8 +5,12 @@ import 'package:scroll_test/two_way_scroll_widget.dart';
 void main() {
   // debugPaintLayerBordersEnabled = true;
   runApp(
-    // MaterialApp(home: ScrollPaintTest()),
-    MaterialApp(home: RotateTest()),
+    MaterialApp(
+      home: RotateTest(),
+      // home: ScrollPaintTest(),
+      //   home: RainbowShamer(),
+      debugShowCheckedModeBanner: false,
+    ),
   );
 }
 

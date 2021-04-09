@@ -2387,11 +2387,24 @@
 //   }
 //
 //   double delta = 0;
+//
 //   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
+//     if ([
+//       'RenderSemanticsAnnotations',
+//       'RenderPadding',
+//       '_RenderInkFeatures',
+//       'RenderSemanticsGestureHandler',
+//       'RenderPointerListener',
+//       'RenderMouseRegion',
+//       '_RenderInputPadding',
+//       'RenderPositionedBox',
+//     ].contains(this.runtimeType.toString()))
+//       return;
+//     print(this.runtimeType.toString());
 //     int i = 0;
 //     paintEvents.forEach((element) {
-//       final p1 = Offset(i * 5+ delta, 0 );
-//       final p2 = Offset(i * 5+ delta, 4);
+//       final p1 = Offset(i * 5 + delta, 0);
+//       final p2 = Offset(i * 5 + delta, 4);
 //       final paint = Paint()
 //         ..color = colorsMap[element.eventType] ?? Color(0xFFFF0000)
 //         ..strokeWidth = 4;
@@ -2399,8 +2412,8 @@
 //       i++;
 //     });
 //     if (this is RenderRepaintBoundary) {
-//       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount +1;
-//       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount+1;
+//       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount + 1;
+//       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount + 1;
 //       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
 //       final textStyle = TextStyle(
 //         color: judgementColorMap[fraction] ?? Color(0xFFFF0000),
@@ -2418,9 +2431,8 @@
 //         minWidth: 0,
 //         maxWidth: 80,
 //       );
-//       textPainter.paint(context.canvas,       this.paintBounds.topRight
+//       textPainter.paint(context.canvas, this.paintBounds.topRight
 //       );
-//
 //     }
 //     // i = 0;
 //     // eventssMap.forEach((key, value) {
@@ -2446,7 +2458,7 @@
 //     // }); //   final Paint paint = Paint()
 //     //   ..color = Color(0x00BBBB | ((0x04000000 * depth) & 0xFF000000));
 //     // context.canvas.drawRect(offset & size, paint);
-//     delta= delta == 0 ? 8 : delta -1;
+//     delta = delta == 0 ? 8 : delta - 1;
 //   }
 //
 //

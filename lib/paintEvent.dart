@@ -20,7 +20,7 @@ const Map<int, Color> judgementColorMap = {
   3: Colors.deepPurple,
   4: Colors.blue,
   5: Colors.amber,
-  9: Colors.green,
+  9: Colors.tealAccent,
 };
 
 class PaintEventHandler {

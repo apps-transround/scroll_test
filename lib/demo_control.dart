@@ -21,11 +21,23 @@ class _DemoControlState extends State<DemoControl> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TextButton(
-            child: Text('Show paint info'),
-            onPressed: () {
-              debugRepaintRainbowEnabled = !debugRepaintRainbowEnabled;
-            }),
+        Expanded(
+          child: ExpansionTile(
+            title: SizedBox(
+              width: 120,
+              child: CheckboxListTile(
+                title: Text('Show paint info'),
+                onChanged: (bool? value) {
+                  setState(() {
+                    debugRepaintRainbowEnabled = !debugRepaintRainbowEnabled;
+                  });
+                },
+                value: debugRepaintRainbowEnabled,
+              ),
+            ),
+            children: [Text('instructions...')],
+          ),
+        ),
       ],
     );
   }

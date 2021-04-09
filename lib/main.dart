@@ -30,60 +30,62 @@ class _ScrollTestState extends State<ScrollTest> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: GestureDetector(
-            onTap: () {
-              // print(repaintSkipMap);
-              // print(repaintMap.toString().replaceAll(',', '\n'));
-            },
-            child: Row(
-              children: [
-                Text('Two-way scroll: right with RepaintBoundary'),
-                TextButton(
-                    onPressed: () {
-                      iterate(leftScrollController);
-                    },
-                    child: Text(
-                      'left',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )),
-                TextButton(
-                    onPressed: () {
-                      iterate(rightScrollController);
-                    },
-                    child: Text(
-                      'right',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )),
-                TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => RotateTest()));
-                    },
-                    child: Text(
-                      'rotate',
-                      style: Theme.of(context).textTheme.bodyText1,
-                    )),
-              ],
-            )),
-      ),
-      body: Row(
-        children: [
-          TwoWayScroll(
-            scrollController: leftScrollController,
-            rowCount: rowCount,
-            columnCount: columnCount,
-            fancy: false,
-            key: Key('left'),
-          ),
-          TwoWayScroll(
-            scrollController: rightScrollController,
-            rowCount: rowCount,
-            columnCount: columnCount,
-            fancy: true,
-            key: Key('right'),
-          ),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: GestureDetector(
+              onTap: () {
+                // print(repaintSkipMap);
+                // print(repaintMap.toString().replaceAll(',', '\n'));
+              },
+              child: Row(
+                children: [
+                  Text('Two-way scroll: right with RepaintBoundary'),
+                  TextButton(
+                      onPressed: () {
+                        iterate(leftScrollController);
+                      },
+                      child: Text(
+                        'left',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        iterate(rightScrollController);
+                      },
+                      child: Text(
+                        'right',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => RotateTest()));
+                      },
+                      child: Text(
+                        'rotate',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      )),
+                ],
+              )),
+        ),
+        body: Row(
+          children: [
+            TwoWayScroll(
+              scrollController: leftScrollController,
+              rowCount: rowCount,
+              columnCount: columnCount,
+              fancy: false,
+              key: Key('left'),
+            ),
+            TwoWayScroll(
+              scrollController: rightScrollController,
+              rowCount: rowCount,
+              columnCount: columnCount,
+              fancy: true,
+              key: Key('right'),
+            ),
+          ],
+        ),
       ),
     );
   }

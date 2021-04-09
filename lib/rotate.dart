@@ -59,44 +59,70 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          // Row(
-          //   children: [
-          //     PlaybackControl(
-          //       onRecord: () {
-          //         setState(() {});
-          //         iterate();
-          //       },
-          //       onPlay: () {
-          //         setState(() {});
-          //       },
-          //     ),
-          //   ],
-          // ),
-          DemoControl(),
-          RepaintBoundary(child: Text('A')),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('SMArt'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('A'),
-          ),
-          Center(
-            child: RepaintBoundary(
-              child: GestureDetector(
-                onTap: () {
-                  _controller.reset();
-                  _controller.forward();
-                },
-                child: SizedBox(
-                  width: 100,
-                  height: 100,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            // Row(
+            //   children: [
+            //     PlaybackControl(
+            //       onRecord: () {
+            //         setState(() {});
+            //         iterate();
+            //       },
+            //       onPlay: () {
+            //         setState(() {});
+            //       },
+            //     ),
+            //   ],
+            // ),
+            DemoControl(),
+            RepaintBoundary(child: Text('A')),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('SMArt'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('A'),
+            ),
+            // CustomPaint(
+            //   size: Size(100, 20),
+            //   painter: PaintMarker(),
+            // ),
+
+            Center(
+              child: RepaintBoundary(
+                child: GestureDetector(
+                  onTap: () {
+                    _controller.reset();
+                    _controller.forward();
+                  },
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: RotationTransition(
+                      turns: _animation,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: FlutterLogo(size: 100.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                width: 100,
+                height: 100,
+                child: GestureDetector(
+                  onTap: () {
+                    _controller2.reset();
+                    _controller2.forward();
+                  },
                   child: RotationTransition(
-                    turns: _animation,
+                    turns: _animation2,
                     child: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: FlutterLogo(size: 100.0),
@@ -105,27 +131,8 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                 ),
               ),
             ),
-          ),
-          Center(
-            child: SizedBox(
-              width: 100,
-              height: 100,
-              child: GestureDetector(
-                onTap: () {
-                  _controller2.reset();
-                  _controller2.forward();
-                },
-                child: RotationTransition(
-                  turns: _animation2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: FlutterLogo(size: 100.0),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -138,5 +145,54 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
     PaintEventHandler.eventMode = EventMode.none;
     // PaintEventHandler.playBack();
     // PaintEventHandler.dump();
+  }
+}
+
+class PaintMarker extends CustomPainter {
+  final List<PaintEvent>? paintEvents;
+
+  const PaintMarker({Key? key, this.paintEvents});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    int i = 0;
+    final textPainter = TextPainter(
+      text: TextSpan(
+        style: TextStyle(
+          color: Colors.tealAccent,
+          fontSize: 16.0,
+        ),
+        text: ' Testus',
+      ),
+      textDirection: TextDirection.ltr,
+    );
+    textPainter.layout();
+    // canvas.drawRect(
+    //     Rect.fromLTWH(0.0, 0.0, size.width, size.height),
+    //     Paint()
+    //       ..strokeCap = StrokeCap.round
+    //       ..color = Colors.black);
+
+    canvas.drawRRect(
+        RRect.fromRectAndRadius(Rect.fromLTWH(0.0, 0.0, size.width, size.height), Radius.circular(4.0)),
+        Paint()
+          ..strokeCap = StrokeCap.round
+          ..color = Colors.black);
+    textPainter.paint(canvas, Offset(0.0, 0.0));
+
+    paintEvents?.forEach((element) {
+      final p1 = Offset(i * 5, 0);
+      final p2 = Offset(i * 5, 20);
+      final paint = Paint()
+        ..color = colorsMap[element.eventType] ?? Colors.red
+        ..strokeWidth = 4;
+      canvas.drawLine(p1, p2, paint);
+      i++;
+    });
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter old) {
+    return true;
   }
 }

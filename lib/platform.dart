@@ -302,11 +302,11 @@
 //       return;
 //     assert(() {
 //       if (debugRepaintRainbowEnabled) {
-//         final Paint paint = Paint()
-//           ..style = PaintingStyle.stroke
-//           ..strokeWidth = 6.0
-//           ..color = debugCurrentRepaintColor.toColor();
-//         canvas.drawRect(estimatedBounds.deflate(3.0), paint);
+//         // final Paint paint = Paint()
+//         //   ..style = PaintingStyle.stroke
+//         //   ..strokeWidth = 6.0
+//         //   ..color = debugCurrentRepaintColor.toColor();
+//         // canvas.drawRect(estimatedBounds.deflate(3.0), paint);
 //       }
 //       if (debugPaintLayerBordersEnabled) {
 //         final Paint paint = Paint()
@@ -2391,23 +2391,23 @@
 //   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
 //     if ([
 //       'RenderSemanticsAnnotations',
-//       'RenderPadding',
-//       '_RenderInkFeatures',
 //       'RenderSemanticsGestureHandler',
-//       'RenderPointerListener',
-//       'RenderMouseRegion',
-//       '_RenderInputPadding',
-//       'RenderPositionedBox',
-//       'RenderAbsorbPointer',
-//       'RenderIgnorePointer',
 //       'RenderExcludeSemantics',
 //       'RenderBlockSemantics',
-//       'RenderConstrainedBox',
+//       '_RenderInkFeatures',
+//       'RenderPointerListener',
+//       'RenderAbsorbPointer',
+//       'RenderIgnorePointer',
+//       'RenderMouseRegion',
+//       '_RenderInputPadding',
+//       'RenderPadding',
+//       // 'RenderPositionedBox',
+//       // 'RenderConstrainedBox',
 //     ].contains(this.runtimeType.toString()))
 //       return;
 //
-//     // print(this.runtimeType.toString());
-//     int i = 0;
+//     print(this.runtimeType.toString());
+//     int i = -1;
 //     // paintEvents.forEach((element) {
 //     //   final p1 = Offset(i * 5 + delta, 0);
 //     //   final p2 = Offset(i * 5 + delta, 4);
@@ -2417,55 +2417,68 @@
 //     //   context.canvas.drawLine(offset + p1, offset + p2, paint);
 //     //   i++;
 //     // });
+//
+//
 //     if (this is RenderRepaintBoundary) {
 //       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount + 1;
 //       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount + 1;
 //       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
 //
 //       paintText(context, Offset.zero, ' $asymPC / $symPC', textColor: judgementColorMap[fraction] ?? Color(0xFFFF0000));
-//
-//       // final textStyle = TextStyle(
-//       //   color: judgementColorMap[fraction] ?? Color(0xFFFF0000),
-//       //   fontSize: 14,
-//       // );
-//       // final textSpan = TextSpan(
-//       //   text: ' $asymPC / $symPC',
-//       //   style: textStyle,
-//       // );
-//       // final textPainter = TextPainter(
-//       //   text: textSpan,
-//       //   textDirection: TextDirection.ltr,
-//       // );
-//       // textPainter.layout(
-//       //   minWidth: 0,
-//       //   maxWidth: 80,
-//       // );
-//       // context.canvas.drawRRect(
-//       //     RRect.fromRectAndRadius(Rect.fromLTWH(0.0, 0.0, 60, 20), Radius.circular(4.0)),
-//       //     Paint()
-//       //       ..strokeCap = StrokeCap.round
-//       //       ..color = Color(0xFF000000));
-//       // textPainter.paint(context.canvas, this.paintBounds.topLeft);
+//       final Paint paint = Paint()
+//         ..style = PaintingStyle.stroke
+//         ..strokeWidth = 2.0
+//         ..color = judgementColorMap[fraction] ?? Color(0xFFa0a0a0);
+//       context.canvas.drawRect(Rect.fromLTWH(offset.dx, offset.dy,
+//           paintBounds.width, paintBounds.height)
+//           , paint);
 //     } //else {
 //     i = 1;
-//     eventssMap.forEach((key, value) {
-//       if ((value) != 0) {
-//         paintText(context, Offset(offset.dx, offset.dy + i * 20), ' ${key
-//             .toString()
-//             .split('.')
-//             .last
-//             .substring(0, 4)}: ${value.toString()}', backgroundColor: colorsMap[key] ?? Color(0xFFFF0000));
-//         i++;
-//       }
-//     }); //   final Paint paint = Paint()
+//
+//     if (debugRepaintLogLevel == LogLevel.full)
+//       paintData(context, offset, i);
+//     // eventssMap.forEach((key, value) {
+//     //   // if ((value) != 0) {
+//     //   paintText(context, Offset(offset.dx, offset.dy + i * 20), ' ${key
+//     //       .toString()
+//     //       .split('.')
+//     //       .last
+//     //       .substring(0, 4)}: ${value.toString()}', backgroundColor: colorsMap[key] ?? Color(0xFFFF0000));
+//     //   i++;
+//     //   // }
+//     // }); //   final Paint paint = Paint()
 //     delta = delta == 0 ? 8 : delta - 1;
 //     // }
+//   }
+//
+//   void paintIndicator(PaintingContext context, Offset offset, int i, double limit, int value) {
+//     final Paint paint = Paint()
+//       ..style = PaintingStyle.stroke
+//       ..strokeWidth = 2.0
+//       ..color = judgementColorMap[value] ?? Color(0xFFa0a0a0);
+//     context.canvas.drawRect(Rect.fromLTWH(offset.dx, offset.dy,
+//         paintBounds.width, paintBounds.height)
+//         , paint);
+//
+//   }
+//   void paintData(PaintingContext context, Offset offset, int i) {
+//     if (this is RenderRepaintBoundary) {
+//       paintText(context, Offset(offset.dx, offset.dy + i * 20),
+//           // ' ${key.toString().split('.').last.substring(0, 4)}: '
+//           ' ${(eventssMap[PaintEventType.paintBoundary]?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintBoundary] ?? 0).toString()} ',
+//           backgroundColor: colorsMap[PaintEventType.paintBoundary] ?? Color(0xFFFF0000));
+//
+//     } else
+//       paintText(context, Offset(offset.dx, offset.dy + i * 20),
+//           ' ${(eventssMap[PaintEventType.paintChild] ?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintUp]?? 0).toString() } ',
+//           backgroundColor: colorsMap[PaintEventType.paintChild] ?? Color(0xFFFF0000));
+//
 //   }
 //
 //   void paintText(PaintingContext context, Offset offset, String text, {Color backgroundColor = const Color(
 //       0xFF000000), Color textColor = const Color(0xFFFFFFFF)}) {
 //     final textStyle = TextStyle(
-//       color: Color(0xFFFFFFFF),
+//       color: textColor,
 //       fontSize: 14,
 //     );
 //     final textSpan = TextSpan(
@@ -2479,7 +2492,7 @@
 //     textPainter.layout(
 //     );
 //     context.canvas.drawRRect(
-//         RRect.fromRectAndRadius(Rect.fromLTWH(offset.dx, offset.dy, 80, 20), Radius.circular(4.0)),
+//         RRect.fromRectAndRadius(Rect.fromLTWH(offset.dx, offset.dy, textPainter.width, 20), Radius.circular(8.0)),
 //         Paint()
 //           ..strokeCap = StrokeCap.round
 //           ..color = backgroundColor);

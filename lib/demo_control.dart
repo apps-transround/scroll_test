@@ -21,6 +21,23 @@ class _DemoControlState extends State<DemoControl> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: DropdownButton<LogLevel>(
+            onChanged: (value) {
+              setState(() {
+                debugRepaintLogLevel = value ?? LogLevel.none;
+              });
+            },
+            items: LogLevel.values.map<DropdownMenuItem<LogLevel>>((LogLevel value) {
+              return DropdownMenuItem<LogLevel>(
+                value: value,
+                child: Text((value.toString())),
+              );
+            }).toList(),
+            value: debugRepaintLogLevel,
+          ),
+        ),
         Expanded(
           child: ExpansionTile(
             title: SizedBox(

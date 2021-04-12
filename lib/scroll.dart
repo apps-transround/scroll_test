@@ -6,6 +6,8 @@ import 'package:scroll_test/playback_control.dart';
 import 'package:scroll_test/smart_widget.dart';
 import 'package:scroll_test/two_way_scroll_widget.dart';
 
+import 'demo_control.dart';
+
 /// This is the stateful widget that the main application instantiates.
 class ScrollPaintTest extends StatefulWidget {
   const ScrollPaintTest({Key? key}) : super(key: key);
@@ -32,15 +34,16 @@ class _ScrollPaintTestState extends State<ScrollPaintTest> with TickerProviderSt
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
-          PlaybackControl(
-            onRecord: () {
-              setState(() {});
-              iterate(leftScrollController);
-            },
-            onPlay: () {
-              setState(() {});
-            },
-          ),
+          // PlaybackControl(
+          //   onRecord: () {
+          //     setState(() {});
+          //     iterate(leftScrollController);
+          //   },
+          //   onPlay: () {
+          //     setState(() {});
+          //   },
+          // ),
+          DemoControl(),
           TwoWayScroll(
             scrollController: leftScrollController,
             rowCount: rowCount,

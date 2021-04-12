@@ -36,24 +36,20 @@ class TwoWayScroll extends StatelessWidget {
   }
 
   Widget generateRow(int rowNumber) {
-    return SmartWidget(
-      key: Key('$rowNumber'),
-      child: Row(
-        // key: Key('row-$rowNumber'),
-        children: [
-          ...List.generate(
-            columnCount,
-            (int j) => fancy
-                ? RepaintBoundary(
-                    // key: Key('rp$rowNumber-$j'),
-                    child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
-                  )
-                : SmartWidget(
-                    key: Key('$rowNumber-$j'),
-                    child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy)),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      // key: Key('row-$rowNumber'),
+      children: [
+        ...List.generate(
+          columnCount,
+          (int j) => fancy
+              ? RepaintBoundary(
+                  // key: Key('rp$rowNumber-$j'),
+                  child: CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+                )
+              : CellWidgetPaint(key: Key('$rowNumber-$j'), row: rowNumber, column: j, fancy: fancy),
+        ),
+      ],
     );
   }
 }

@@ -6,11 +6,12 @@ import 'package:rxdart/rxdart.dart';
 
 enum PlaybackMode { none, run, pause, stop }
 enum EventMode { record, playback, interactive, none }
+enum LogLevel { full, benchmark, indicator, none }
 
 const Map<PaintEventType, Color> colorsMap = {
-  PaintEventType.paintChild: Colors.deepOrange,
+  PaintEventType.paintChild: Color(0xFF0D47A1),// Colors.blue.shade700,
   PaintEventType.paintBoundary: Colors.deepPurple,
-  PaintEventType.markPaintBoundary: Colors.blue,
+  PaintEventType.markPaintBoundary: Colors.indigoAccent,
   PaintEventType.markPaintUp: Colors.amber,
   PaintEventType.markPaintRoot: Colors.grey,
 };

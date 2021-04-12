@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scroll_test/demo_control.dart';
+import 'package:scroll_test/expensive_widget.dart';
 import 'package:scroll_test/paintEvent.dart';
 
 void main() => runApp(const MyApp());
@@ -76,21 +77,23 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
             //     ),
             //   ],
             // ),
-            DemoControl(),
             RepaintBoundary(child: Text('A')),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('SMArt'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('A'),
-            ),
+            DemoControl(),
             // CustomPaint(
             //   size: Size(100, 20),
             //   painter: PaintMarker(),
             // ),
-
+            ExpensiveWidget(
+              width: 240,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Tap logos to rotate'),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('With RepaintBoundary'),
+            ),
             Center(
               child: RepaintBoundary(
                 child: GestureDetector(
@@ -111,6 +114,10 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                   ),
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('Without RepaintBoundary'),
             ),
             Center(
               child: SizedBox(

@@ -9,11 +9,13 @@ class ExpensiveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('builddy');
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(color: Colors.orange),
+      decoration: BoxDecoration(color: Colors.orange.shade100),
       child: CustomPaint(
+        isComplex: true,
         painter: ShapesPainter(width, height),
       ),
     );

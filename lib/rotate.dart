@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:scroll_test/demo_control.dart';
 import 'package:scroll_test/expensive_widget.dart';
 import 'package:scroll_test/paintEvent.dart';
+import 'package:scroll_test/paint_measure.dart';
 
 void main() => runApp(const MyApp());
 
@@ -115,9 +116,12 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Without RepaintBoundary'),
+            PaintMeasure(
+              measurePaint: true,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Without RepaintBoundary'),
+              ),
             ),
             Center(
               child: SizedBox(

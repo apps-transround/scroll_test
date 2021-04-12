@@ -2389,24 +2389,24 @@
 //   double delta = 0;
 //
 //   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
-//     if ([
-//       'RenderSemanticsAnnotations',
-//       'RenderSemanticsGestureHandler',
-//       'RenderExcludeSemantics',
-//       'RenderBlockSemantics',
-//       '_RenderInkFeatures',
-//       'RenderPointerListener',
-//       'RenderAbsorbPointer',
-//       'RenderIgnorePointer',
-//       'RenderMouseRegion',
-//       '_RenderInputPadding',
-//       'RenderPadding',
-//       // 'RenderPositionedBox',
-//       // 'RenderConstrainedBox',
-//     ].contains(this.runtimeType.toString()))
-//       return;
+//     // if ([
+//     //   'RenderSemanticsAnnotations',
+//     //   'RenderSemanticsGestureHandler',
+//     //   'RenderExcludeSemantics',
+//     //   'RenderBlockSemantics',
+//     //   '_RenderInkFeatures',
+//     //   'RenderPointerListener',
+//     //   'RenderAbsorbPointer',
+//     //   'RenderIgnorePointer',
+//     //   'RenderMouseRegion',
+//     //   '_RenderInputPadding',
+//     //   // 'RenderPadding',
+//     //   // 'RenderPositionedBox',
+//     //   // 'RenderConstrainedBox',
+//     // ].contains(this.runtimeType.toString()))
+//     //   return;
 //
-//     print(this.runtimeType.toString());
+//     // print(this.runtimeType.toString());
 //     int i = -1;
 //     // paintEvents.forEach((element) {
 //     //   final p1 = Offset(i * 5 + delta, 0);
@@ -2425,14 +2425,24 @@
 //       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
 //
 //       paintText(context, Offset.zero, ' $asymPC / $symPC', textColor: judgementColorMap[fraction] ?? Color(0xFFFF0000));
-//       final Paint paint = Paint()
-//         ..style = PaintingStyle.stroke
-//         ..strokeWidth = 2.0
-//         ..color = judgementColorMap[fraction] ?? Color(0xFFa0a0a0);
-//       context.canvas.drawRect(Rect.fromLTWH(offset.dx, offset.dy,
-//           paintBounds.width, paintBounds.height)
-//           , paint);
-//     } //else {
+//
+//       paintIndicator(context, offset, i, 0, fraction);
+//     } else {
+//       int parentMark = 0;
+//       int meMark = 0;
+//       if (parent is RenderObject)
+//         parentMark = (parent as RenderObject).eventssMap[PaintEventType.markPaintUp] ?? 0;
+//       meMark = eventssMap[PaintEventType.markPaintUp] ?? 0;
+//
+//       print('${this.runtimeType.toString()}: $meMark / $parentMark ${parent.runtimeType}');
+//
+//
+//       if (meMark == parentMark && meMark > 10 ) {
+//         paintIndicator(context, offset, i, 0, 1);
+//         paintText(context, Offset(offset.dx , offset.dy-10), ' Add RPB', textColor: judgementColorMap[1] ?? Color
+//           (0xFFFF0000));
+//       }
+//     }
 //     i = 1;
 //
 //     if (debugRepaintLogLevel == LogLevel.full)
@@ -2459,20 +2469,20 @@
 //     context.canvas.drawRect(Rect.fromLTWH(offset.dx, offset.dy,
 //         paintBounds.width, paintBounds.height)
 //         , paint);
-//
 //   }
+//
 //   void paintData(PaintingContext context, Offset offset, int i) {
 //     if (this is RenderRepaintBoundary) {
 //       paintText(context, Offset(offset.dx, offset.dy + i * 20),
 //           // ' ${key.toString().split('.').last.substring(0, 4)}: '
-//           ' ${(eventssMap[PaintEventType.paintBoundary]?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintBoundary] ?? 0).toString()} ',
+//           ' ${(eventssMap[PaintEventType.paintBoundary] ?? 0).toString()} / ${(eventssMap[PaintEventType
+//               .markPaintBoundary] ?? 0).toString()} ',
 //           backgroundColor: colorsMap[PaintEventType.paintBoundary] ?? Color(0xFFFF0000));
-//
 //     } else
 //       paintText(context, Offset(offset.dx, offset.dy + i * 20),
-//           ' ${(eventssMap[PaintEventType.paintChild] ?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintUp]?? 0).toString() } ',
+//           ' ${(eventssMap[PaintEventType.paintChild] ?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintUp] ?? 0)
+//               .toString() } ',
 //           backgroundColor: colorsMap[PaintEventType.paintChild] ?? Color(0xFFFF0000));
-//
 //   }
 //
 //   void paintText(PaintingContext context, Offset offset, String text, {Color backgroundColor = const Color(

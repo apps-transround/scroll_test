@@ -2,11 +2,11 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:scroll_test/render_object_helper.dart';
 // import 'package:rxdart/rxdart.dart';
 
 enum PlaybackMode { none, run, pause, stop }
 enum EventMode { record, playback, interactive, none }
-enum LogLevel { full, benchmark, indicator, none }
 
 const Map<PaintEventType, Color> colorsMap = {
   PaintEventType.paintChild: Color(0xFF0D47A1), // Colors.blue.shade700,
@@ -150,23 +150,5 @@ class PaintEventHandler {
   void dispose() {
     // replaySubject.close();
     // replayPositionSubject.close();
-  }
-}
-
-enum PaintEventType { markPaintUp, markPaintRoot, markPaintBoundary, paintChild, paintBoundary, matchWidget, none }
-
-class PaintEvent {
-  PaintEventType eventType;
-  String id;
-  String? widgetId;
-  late int timeStamp;
-
-  PaintEvent({this.eventType = PaintEventType.none, this.id = 'Unknown', this.widgetId}) {
-    timeStamp = DateTime.now().microsecondsSinceEpoch;
-  }
-
-  @override
-  String toString() {
-    return 'PaintEvent{eventType: $eventType, id: $id, widgetId: $widgetId, timeStamp: $timeStamp}';
   }
 }

@@ -1,5 +1,3 @@
-// import 'package:scroll_test/paintEvent.dart';
-// import 'package:scroll_test/render_paint_measure.dart';
 //
 // // Copyright 2014 The Flutter Authors. All rights reserved.
 // // Use of this source code is governed by a BSD-style license that can be
@@ -19,6 +17,8 @@
 // import 'debug.dart';
 // import 'layer.dart';
 // import 'proxy_box.dart';
+//
+// import 'package:scroll_test/render_object_helper.dart';
 //
 // export 'package:flutter/foundation.dart'
 //     show FlutterError, InformationCollector, DiagnosticsNode, ErrorSummary, ErrorDescription, ErrorHint, DiagnosticsProperty, StringProperty, DoubleProperty, EnumProperty, FlagProperty, IntProperty, DiagnosticPropertiesBuilder;
@@ -190,10 +190,10 @@
 //     if (child.isRepaintBoundary) {
 //       stopRecordingIfNeeded();
 //       _compositeChild(child, offset);
-//       child.logEvent(PaintEvent(eventType: PaintEventType.paintBoundary, id: id));
+//       child.renderObjectHelper.logEvent(PaintEvent(eventType: PaintEventType.paintBoundary, id: id));
 //     } else {
 //       child._paintWithContext(this, offset);
-//       child.logEvent(PaintEvent(eventType: PaintEventType.paintChild, id: id));
+//       child.renderObjectHelper.logEvent(PaintEvent(eventType: PaintEventType.paintChild, id: id));
 //     }
 //
 //     assert(() {
@@ -1227,6 +1227,8 @@
 //     _needsCompositing = isRepaintBoundary || alwaysNeedsCompositing;
 //   }
 //
+//   late RenderObjectHelper renderObjectHelper = RenderObjectHelper(this);
+//
 //   /// Cause the entire subtree rooted at the given [RenderObject] to be marked
 //   /// dirty for layout, paint, etc, so that the effects of a hot reload can be
 //   /// seen, or so that the effect of changing a global debug flag (such as
@@ -2161,22 +2163,6 @@
 //   ///    dirty.
 //
 //
-//   static const int keepPaint = 24;
-//   List<PaintEvent> paintEvents = [];
-//
-//   Map<PaintEventType, int> eventssMap = {
-//   };
-//
-//   void logEvent(PaintEvent paintEvent) {
-//     if (debugRepaintRainbowEnabled) {
-//       paintEvents.add(paintEvent);
-//       if (paintEvents.length > keepPaint) {
-//         paintEvents.removeAt(0);
-//       }
-//       eventssMap[paintEvent.eventType] = (eventssMap[paintEvent.eventType] ?? 0) + 1;
-//     }
-//     // print('$scn ${paintEvents.length}');
-//   }
 //
 //
 //   void markNeedsPaint() {
@@ -2198,13 +2184,13 @@
 //       if (owner != null) {
 //         owner!._nodesNeedingPaint.add(this);
 //         owner!.requestVisualUpdate();
-//         logEvent(PaintEvent(eventType: PaintEventType.markPaintBoundary, id: id));
+//         renderObjectHelper.logEvent(PaintEvent(eventType: PaintEventType.markPaintBoundary, id: id));
 //       }
 //     } else if (parent is RenderObject) {
 //       final RenderObject parent = this.parent! as RenderObject;
 //       parent.markNeedsPaint();
 //       assert(parent == this.parent);
-//       logEvent(PaintEvent(eventType: PaintEventType.markPaintUp, id: id));
+//       renderObjectHelper.logEvent(PaintEvent(eventType: PaintEventType.markPaintUp, id: id));
 //     } else {
 //       assert(() {
 //         if (debugPrintMarkNeedsPaintStacks)
@@ -2215,7 +2201,7 @@
 //       // then we have to paint ourselves, since nobody else can paint
 //       // us. We don't add ourselves to _nodesNeedingPaint in this
 //       // case, because the root is always told to paint regardless.
-//       logEvent(PaintEvent(eventType: PaintEventType.markPaintRoot, id: id));
+//       renderObjectHelper.logEvent(PaintEvent(eventType: PaintEventType.markPaintRoot, id: id));
 //       if (owner != null)
 //         owner!.requestVisualUpdate();
 //     }
@@ -2378,7 +2364,7 @@
 //       _debugReportException('paint', e, stack);
 //     }
 //     if (debugRepaintRainbowEnabled)
-//       debugPaintPaintInfo(context, offset);
+//       renderObjectHelper.debugPaintPaintInfo(context, offset);
 //     assert(() {
 //       debugPaint(context, offset);
 //       _debugActivePaint = debugLastActivePaint;
@@ -2387,142 +2373,7 @@
 //     }());
 //   }
 //
-//   double delta = 0;
 //
-//   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
-//     if (!(hasParentOf<RenderPaintMeasure>()?.measurePaint ?? true))
-//       // if (parent is RenderPaintMeasure && !(parent as RenderPaintMeasure).measurePaint)
-//       //   return;
-//       // if (this is RenderPaintMeasure && !(this as RenderPaintMeasure).measurePaint)
-//       return;
-//     // if ([
-//     //   'RenderSemanticsAnnotations',
-//     //   'RenderSemanticsGestureHandler',
-//     //   'RenderExcludeSemantics',
-//     //   'RenderBlockSemantics',
-//     //   '_RenderInkFeatures',
-//     //   'RenderPointerListener',
-//     //   'RenderAbsorbPointer',
-//     //   'RenderIgnorePointer',
-//     //   'RenderMouseRegion',
-//     //   '_RenderInputPadding',
-//     //   // 'RenderPadding',
-//     //   // 'RenderPositionedBox',
-//     //   // 'RenderConstrainedBox',
-//     // ].contains(this.runtimeType.toString()))
-//     //   return;
-//
-//     // print(this.runtimeType.toString());
-//     int i = -1;
-//     // paintEvents.forEach((element) {
-//     //   final p1 = Offset(i * 5 + delta, 0);
-//     //   final p2 = Offset(i * 5 + delta, 4);
-//     //   final paint = Paint()
-//     //     ..color = colorsMap[element.eventType] ?? Color(0xFFFF0000)
-//     //     ..strokeWidth = 4;
-//     //   context.canvas.drawLine(offset + p1, offset + p2, paint);
-//     //   i++;
-//     // });
-//
-//
-//     if (this is RenderRepaintBoundary) {
-//       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount + 1;
-//       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount + 1;
-//       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
-//       if (debugRepaintLogLevel == LogLevel.full)
-//         paintText(context, Offset.zero, ' $asymPC / $symPC', textColor: judgementColorMap[fraction] ?? Color(0xFFFF0000));
-//
-//       paintIndicator(context, offset, i, 0, fraction);
-//     } else {
-//       int parentMark = 0;
-//       int meMark = 0;
-//       if (parent is RenderObject)
-//         parentMark = (parent as RenderObject).eventssMap[PaintEventType.markPaintUp] ?? 0;
-//       meMark = eventssMap[PaintEventType.markPaintUp] ?? 0;
-//
-//       // print('${this.runtimeType.toString()}: $meMark / $parentMark ${parent.runtimeType}');
-//
-//
-//       if (meMark == parentMark && meMark > 10 ) {
-//         paintIndicator(context, offset, i, 0, 1);
-//         paintText(context, Offset(offset.dx , offset.dy-10), ' Add RPB', textColor: judgementColorMap[1] ?? Color
-//           (0xFFFF0000));
-//       }
-//     }
-//     i = 1;
-//
-//     if (debugRepaintLogLevel == LogLevel.full)
-//       paintData(context, offset, i);
-//     // eventssMap.forEach((key, value) {
-//     //   // if ((value) != 0) {
-//     //   paintText(context, Offset(offset.dx, offset.dy + i * 20), ' ${key
-//     //       .toString()
-//     //       .split('.')
-//     //       .last
-//     //       .substring(0, 4)}: ${value.toString()}', backgroundColor: colorsMap[key] ?? Color(0xFFFF0000));
-//     //   i++;
-//     //   // }
-//     // }); //   final Paint paint = Paint()
-//     delta = delta == 0 ? 8 : delta - 1;
-//     // }
-//   }
-//
-//   void paintIndicator(PaintingContext context, Offset offset, int i, double limit, int value) {
-//     final Paint paint = Paint()
-//       ..style = PaintingStyle.stroke
-//       ..strokeWidth = 2.0
-//       ..color = judgementColorMap[value] ?? Color(0xFFa0a0a0);
-//     context.canvas.drawRect(Rect.fromLTWH(offset.dx, offset.dy,
-//         paintBounds.width, paintBounds.height)
-//         , paint);
-//   }
-//
-//   void paintData(PaintingContext context, Offset offset, int i) {
-//     if (this is RenderRepaintBoundary) {
-//       paintText(context, Offset(offset.dx, offset.dy + i * 20),
-//           // ' ${key.toString().split('.').last.substring(0, 4)}: '
-//           ' ${(eventssMap[PaintEventType.paintBoundary] ?? 0).toString()} / ${(eventssMap[PaintEventType
-//               .markPaintBoundary] ?? 0).toString()} ',
-//           backgroundColor: colorsMap[PaintEventType.paintBoundary] ?? Color(0xFFFF0000));
-//     } else
-//       paintText(context, Offset(offset.dx, offset.dy + i * 20),
-//           ' ${(eventssMap[PaintEventType.paintChild] ?? 0).toString()} / ${(eventssMap[PaintEventType.markPaintUp] ?? 0)
-//               .toString() } ',
-//           backgroundColor: colorsMap[PaintEventType.paintChild] ?? Color(0xFFFF0000));
-//   }
-//
-//   void paintText(PaintingContext context, Offset offset, String text, {Color backgroundColor = const Color(
-//       0xFF000000), Color textColor = const Color(0xFFFFFFFF)}) {
-//     final textStyle = TextStyle(
-//       color: textColor,
-//       fontSize: 14,
-//     );
-//     final textSpan = TextSpan(
-//       text: ' $text',
-//       style: textStyle,
-//     );
-//     final textPainter = TextPainter(
-//       text: textSpan,
-//       textDirection: TextDirection.ltr,
-//     );
-//     textPainter.layout(
-//     );
-//     context.canvas.drawRRect(
-//         RRect.fromRectAndRadius(Rect.fromLTWH(offset.dx, offset.dy, textPainter.width, 20), Radius.circular(8.0)),
-//         Paint()
-//           ..strokeCap = StrokeCap.round
-//           ..color = backgroundColor);
-//     textPainter.paint(context.canvas, offset);
-//   }
-//
-//   T? hasParentOf<T>() {
-//     RenderObject? tmpRender = this;
-//     while (tmpRender != null && !(tmpRender is T)) {
-//       tmpRender = tmpRender.parent == null ? null : (tmpRender.parent as RenderObject);
-//     }
-//
-//     return tmpRender == null ? null : (tmpRender as T);
-//   }
 //
 //   /// An estimate of the bounds within which this render object will paint.
 //   /// Useful for debugging flags such as [debugPaintLayerBordersEnabled].

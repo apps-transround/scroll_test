@@ -1,4 +1,5 @@
 // import 'package:scroll_test/paintEvent.dart';
+// import 'package:scroll_test/render_paint_measure.dart';
 //
 // // Copyright 2014 The Flutter Authors. All rights reserved.
 // // Use of this source code is governed by a BSD-style license that can be
@@ -2389,6 +2390,11 @@
 //   double delta = 0;
 //
 //   void debugPaintPaintInfo(PaintingContext context, Offset offset) {
+//     if (!(hasParentOf<RenderPaintMeasure>()?.measurePaint ?? true))
+//       // if (parent is RenderPaintMeasure && !(parent as RenderPaintMeasure).measurePaint)
+//       //   return;
+//       // if (this is RenderPaintMeasure && !(this as RenderPaintMeasure).measurePaint)
+//       return;
 //     // if ([
 //     //   'RenderSemanticsAnnotations',
 //     //   'RenderSemanticsGestureHandler',
@@ -2423,8 +2429,8 @@
 //       int asymPC = (this as RenderRepaintBoundary).debugAsymmetricPaintCount + 1;
 //       int symPC = (this as RenderRepaintBoundary).debugSymmetricPaintCount + 1;
 //       int fraction = (asymPC / (asymPC + symPC) * 8).round() + 1;
-//
-//       paintText(context, Offset.zero, ' $asymPC / $symPC', textColor: judgementColorMap[fraction] ?? Color(0xFFFF0000));
+//       if (debugRepaintLogLevel == LogLevel.full)
+//         paintText(context, Offset.zero, ' $asymPC / $symPC', textColor: judgementColorMap[fraction] ?? Color(0xFFFF0000));
 //
 //       paintIndicator(context, offset, i, 0, fraction);
 //     } else {
@@ -2434,7 +2440,7 @@
 //         parentMark = (parent as RenderObject).eventssMap[PaintEventType.markPaintUp] ?? 0;
 //       meMark = eventssMap[PaintEventType.markPaintUp] ?? 0;
 //
-//       print('${this.runtimeType.toString()}: $meMark / $parentMark ${parent.runtimeType}');
+//       // print('${this.runtimeType.toString()}: $meMark / $parentMark ${parent.runtimeType}');
 //
 //
 //       if (meMark == parentMark && meMark > 10 ) {
@@ -2507,6 +2513,15 @@
 //           ..strokeCap = StrokeCap.round
 //           ..color = backgroundColor);
 //     textPainter.paint(context.canvas, offset);
+//   }
+//
+//   T? hasParentOf<T>() {
+//     RenderObject? tmpRender = this;
+//     while (tmpRender != null && !(tmpRender is T)) {
+//       tmpRender = tmpRender.parent == null ? null : (tmpRender.parent as RenderObject);
+//     }
+//
+//     return tmpRender == null ? null : (tmpRender as T);
 //   }
 //
 //   /// An estimate of the bounds within which this render object will paint.

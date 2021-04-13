@@ -56,93 +56,112 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
   @override
   void dispose() {
     _controller.dispose();
+    _controller2.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            // Row(
-            //   children: [
-            //     PlaybackControl(
-            //       onRecord: () {
-            //         setState(() {});
-            //         iterate();
-            //       },
-            //       onPlay: () {
-            //         setState(() {});
-            //       },
-            //     ),
-            //   ],
-            // ),
-            RepaintBoundary(child: Text('A')),
-            DemoControl(),
-            // CustomPaint(
-            //   size: Size(100, 20),
-            //   painter: PaintMarker(),
-            // ),
-            ExpensiveWidget(
-              width: 240,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Tap logos to rotate'),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('With RepaintBoundary'),
-            ),
-            Center(
-              child: RepaintBoundary(
-                child: GestureDetector(
-                  onTap: () {
-                    _controller.reset();
-                    _controller.forward();
-                  },
-                  child: SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: RotationTransition(
-                      turns: _animation,
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: FlutterLogo(size: 100.0),
-                      ),
+    return PaintMeasure.disable(
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Repaint measurement experiments'),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                PaintMeasure.disable(child: DemoControl()),
+                Container(
+                  constraints: BoxConstraints(maxWidth: 800),
+                  padding: const EdgeInsets.all(16.0),
+                  child: PaintMeasure.enable(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Text('Expensive widget'),
+                            ),
+                            ExpensiveWidget(
+                              width: 240,
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Tap logos to rotate'),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: Text('With RepaintBoundary'),
+                            ),
+                            Center(
+                              child: RepaintBoundary(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _controller.reset();
+                                    _controller.forward();
+                                  },
+                                  child: SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: RotationTransition(
+                                      turns: _animation,
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: FlutterLogo(size: 100.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            PaintMeasure(
+                              measurePaint: false,
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: PaintMeasure(measurePaint: false, child: Text('Without RepaintBoundary')),
+                              ),
+                            ),
+                            Center(
+                              child: SizedBox(
+                                width: 100,
+                                height: 100,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _controller2.reset();
+                                    _controller2.forward();
+                                  },
+                                  child: RotationTransition(
+                                    turns: _animation2,
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: FlutterLogo(size: 100.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
-            PaintMeasure(
-              measurePaint: true,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Without RepaintBoundary'),
-              ),
-            ),
-            Center(
-              child: SizedBox(
-                width: 100,
-                height: 100,
-                child: GestureDetector(
-                  onTap: () {
-                    _controller2.reset();
-                    _controller2.forward();
-                  },
-                  child: RotationTransition(
-                    turns: _animation2,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: FlutterLogo(size: 100.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

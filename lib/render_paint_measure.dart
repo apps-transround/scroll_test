@@ -1,17 +1,12 @@
 import 'package:flutter/rendering.dart';
 
-class RenderPaintMeasure extends RenderBox {
+class RenderPaintMeasure extends RenderProxyBox {
   RenderPaintMeasure({
     this.measurePaint = true,
     RenderBox? child,
-  });
+  }) : super(child);
 
   bool measurePaint;
-
-  @override
-  void performLayout() {
-    return;
-  }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {

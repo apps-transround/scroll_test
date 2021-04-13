@@ -49,29 +49,29 @@ class _PlaybackControlState extends State<PlaybackControl> {
               widget.onStop?.call();
             }),
         StreamBuilder<int>(
-            stream: PaintEventHandler.replayPositionSubject,
+            // stream: PaintEventHandler.replayPositionSubject,
             builder: (context, snapshot) {
-              double value = (snapshot.data ?? 0) + 0.0;
-              if (value > PaintEventHandler.timeRange + 1.0) value = 0;
-              return Row(
-                children: [
-                  Slider(
-                      value: value,
-                      min: 0,
-                      max: PaintEventHandler.timeRange + 1.0,
-                      // divisions: 5,
-                      label: 'a',
-                      onChanged: (v) {
-                        setState(() {
-                          sliderValue = v;
-                          PaintEventHandler.setScn(v.truncate());
-                          // PaintEventHandler.playbackZeitLuppe = v;
-                        });
-                      }),
-                  Text('${((snapshot.data ?? 0) / 1000).truncate()} ms')
-                ],
-              );
-            }),
+          double value = (snapshot.data ?? 0) + 0.0;
+          if (value > PaintEventHandler.timeRange + 1.0) value = 0;
+          return Row(
+            children: [
+              Slider(
+                  value: value,
+                  min: 0,
+                  max: PaintEventHandler.timeRange + 1.0,
+                  // divisions: 5,
+                  label: 'a',
+                  onChanged: (v) {
+                    setState(() {
+                      sliderValue = v;
+                      PaintEventHandler.setScn(v.truncate());
+                      // PaintEventHandler.playbackZeitLuppe = v;
+                    });
+                  }),
+              Text('${((snapshot.data ?? 0) / 1000).truncate()} ms')
+            ],
+          );
+        }),
         IconButton(
             icon: Icon(Icons.list),
             onPressed: () {

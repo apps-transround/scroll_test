@@ -12,6 +12,18 @@ class PaintMeasure extends SingleChildRenderObjectWidget {
     Widget? child,
   }) : super(key: key, child: child);
 
+  const PaintMeasure.disable({
+    Key? key,
+    this.measurePaint = false,
+    Widget? child,
+  }) : super(key: key, child: child);
+
+  const PaintMeasure.enable({
+    Key? key,
+    this.measurePaint = true,
+    Widget? child,
+  }) : super(key: key, child: child);
+
   /// The amount of space by which to inset the child.
   final bool measurePaint;
 

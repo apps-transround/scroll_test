@@ -38,42 +38,42 @@ class SmartWidget extends StatelessWidget {
         return child;
       case EventMode.playback:
         return StreamBuilder<PaintEvent>(
-            stream: PaintEventHandler.replaySubjects[id],
+            // stream: PaintEventHandler.replaySubjects[id],
             builder: (context, snapshot) {
-              PaintEvent tmpEvent = snapshot.data ?? PaintEvent();
-              if (tmpEvent.widgetId == key.toString()) {
-                lastEvent = tmpEvent;
-                if (highestPlayed < tmpEvent.timeStamp) {
-                  paintEvents.add(tmpEvent);
-                  highestPlayed = tmpEvent.timeStamp;
-                }
-              }
-              // print('${tmpEvent.toString()}');
+          PaintEvent tmpEvent = snapshot.data ?? PaintEvent();
+          if (tmpEvent.widgetId == key.toString()) {
+            lastEvent = tmpEvent;
+            if (highestPlayed < tmpEvent.timeStamp) {
+              paintEvents.add(tmpEvent);
+              highestPlayed = tmpEvent.timeStamp;
+            }
+          }
+          // print('${tmpEvent.toString()}');
 
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  child,
-                  // Container(
-                  //   constraints: BoxConstraints(
-                  //     minHeight: 20,
-                  //     minWidth: 20,
-                  //   ),
-                  //   child: child,
-                  // ),
-                  CustomPaint(
-                    size: Size(100, 40),
-                    painter: PaintMarker(paintEvents: paintEvents),
-                  ),
-                  // Container(
-                  //   // width: 20,
-                  //   // height: 20,
-                  //   color: colorsMap[lastEvent.eventType],
-                  //   // child: Text(lastEvent.eventType.toString()),
-                  // )
-                ],
-              );
-            });
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              child,
+              // Container(
+              //   constraints: BoxConstraints(
+              //     minHeight: 20,
+              //     minWidth: 20,
+              //   ),
+              //   child: child,
+              // ),
+              CustomPaint(
+                size: Size(100, 40),
+                painter: PaintMarker(paintEvents: paintEvents),
+              ),
+              // Container(
+              //   // width: 20,
+              //   // height: 20,
+              //   color: colorsMap[lastEvent.eventType],
+              //   // child: Text(lastEvent.eventType.toString()),
+              // )
+            ],
+          );
+        });
     }
   }
 }

@@ -8,7 +8,7 @@ import 'package:scroll_test/two_way_scroll_widget.dart';
 void main() {
   // debugPaintLayerBordersEnabled = true;
   debugRepaintRainbowEnabled = true;
-  debugRepaintLogLevel = LogLevel.full;
+  debugRepaintLogLevel = LogLevel.benchmark;
   runApp(
     MaterialApp(
       home: RotateTest(),

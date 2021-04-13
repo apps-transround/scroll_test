@@ -2,14 +2,14 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
+// import 'package:rxdart/rxdart.dart';
 
 enum PlaybackMode { none, run, pause, stop }
 enum EventMode { record, playback, interactive, none }
 enum LogLevel { full, benchmark, indicator, none }
 
 const Map<PaintEventType, Color> colorsMap = {
-  PaintEventType.paintChild: Color(0xFF0D47A1),// Colors.blue.shade700,
+  PaintEventType.paintChild: Color(0xFF0D47A1), // Colors.blue.shade700,
   PaintEventType.paintBoundary: Colors.deepPurple,
   PaintEventType.markPaintBoundary: Colors.indigoAccent,
   PaintEventType.markPaintUp: Colors.amber,
@@ -29,10 +29,10 @@ class PaintEventHandler {
   static Map<String, String> widgetRenderMap = Map();
   static int scn = 0;
 
-  static BehaviorSubject<PaintEvent> replaySubject = BehaviorSubject();
-  static Map<String, BehaviorSubject<PaintEvent>> replaySubjects = Map();
-
-  static BehaviorSubject<int> replayPositionSubject = BehaviorSubject();
+  // static BehaviorSubject<PaintEvent> replaySubject = BehaviorSubject();
+  // static Map<String, BehaviorSubject<PaintEvent>> replaySubjects = Map();
+  //
+  // static BehaviorSubject<int> replayPositionSubject = BehaviorSubject();
 
   static double playbackZeitLuppe = 50;
   static PlaybackMode playbackMode = PlaybackMode.none;
@@ -119,14 +119,14 @@ class PaintEventHandler {
       if (playbackMode != PlaybackMode.run) break;
       tmpEvent.widgetId ??= widgetRenderMap[tmpEvent.id];
 
-      replaySubjects[tmpEvent.widgetId]?.add(tmpEvent);
-      // replaySubject.add(tmpEvent);
-      int delta = (scn < timeRange) ? (paintEvents[pos + 1].timeStamp - tmpEvent.timeStamp) : 0;
-      if (delta != 0) {
-        replayPositionSubject.add(scn);
-        await Future.delayed(Duration(microseconds: (delta * playbackZeitLuppe).round()));
-        scn = scn + delta;
-      }
+      // replaySubjects[tmpEvent.widgetId]?.add(tmpEvent);
+      // // replaySubject.add(tmpEvent);
+      // int delta = (scn < timeRange) ? (paintEvents[pos + 1].timeStamp - tmpEvent.timeStamp) : 0;
+      // if (delta != 0) {
+      //   replayPositionSubject.add(scn);
+      //   await Future.delayed(Duration(microseconds: (delta * playbackZeitLuppe).round()));
+      //   scn = scn + delta;
+      // }
       pos++;
     }
     print('REEEEADY playback');
@@ -134,22 +134,22 @@ class PaintEventHandler {
 
   static void setScn(int newScn) {
     scn = min(newScn, paintEvents.length - 1);
-    replayPositionSubject.add(scn);
-    replaySubject.add(paintEvents[scn]);
+    // replayPositionSubject.add(scn);
+    // replaySubject.add(paintEvents[scn]);
   }
 
   static void matchRequest() {
-    replaySubject.add(PaintEvent(eventType: PaintEventType.matchWidget));
+    // replaySubject.add(PaintEvent(eventType: PaintEventType.matchWidget));
   }
 
   static void matchOne({required String widgetId, required String renderId}) {
     widgetRenderMap[renderId] = widgetId;
-    replaySubjects[widgetId] = BehaviorSubject<PaintEvent>();
+    // replaySubjects[widgetId] = BehaviorSubject<PaintEvent>();
   }
 
   void dispose() {
-    replaySubject.close();
-    replayPositionSubject.close();
+    // replaySubject.close();
+    // replayPositionSubject.close();
   }
 }
 

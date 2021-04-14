@@ -8,26 +8,27 @@ String htmlData = """
   
   <p>- It runs on a fork of the framework with some experimental paint event logging and in-place indicators added.</p> 
   <p>- The demo app is a normal Flutter app with standard widgets.</p>
-  <p>- For convenience, a custom widget with render object was created that can disable repaint measurements and indicators for its child tree.</p>
-  <p>- The UI is just an experiment.</p>
+  <p>- For convenience, a custom widget with render object was created that can disable and re-enable repaint 
+  measurements and indicators for its child tree.</p>
+  <p>- The whole app is just an experiment.</p>
   
   <h3>Usage:</h3>
-  <p>Tap Flutter logos to start rotate animation. Render paint event data is collected and displayed in place</p>
-  <p>Change Paint measure level to see different level of evaluation displayed</p>
+  <p>Tap Flutter logos to start the rotate animation. Render paint event data is collected and displayed in place</p>
+  <p>Change Paint measure level to see different levels of evaluation displayed</p>
 
-  <p class='indent'>- Indicator: only items needing attention are marked </p> 
-  <p class='indent'>- Benchmark: all relevant items are marked with evaluated data</p>
-  <p class='indent'>- All: confusingly much measurement data is shown for all included items...</p>
+  <p class='indent'>- <b>Indicator:</b> only items needing attention are marked </p> 
+  <p class='indent'>- <b>Benchmark:</b> all relevant items are marked with evaluated data</p>
+  <p class='indent'>- <b>All:</b> confusingly much measurement data is shown for all included items...</p>
   
 
       <h3>Legend:</h3>
       ${makeExplanation()}
       <p></p>
       <div class='indent'>
-      <p><span style='background-color: black; color: Aquamarine;'>\u00A0 Repaint boundary benchmark: Super </span></p>
-      <p><span style='background-color: black; color: Aquamarine;'>\u00A0 Repaint boundary data: Async / Sync </span></p>
-      <p><span style='background-color: black; color: red;'>\u00A0 Widget paint benchmark: Add RPB </span></p>
-      <p><span style='background-color: #0D47A1; color: white; margin:40px; '> \u00A0 Widget paint data:  Paint / Mark parent </span></p>
+      <p><span style='background-color: black; color: Aquamarine;'>\u00A0 Repaint boundary benchmark: Super\u00A0 </span></p>
+      <p><span style='background-color: black; color: Aquamarine;'>\u00A0 Repaint boundary data: Async / Sync\u00A0 </span></p>
+      <p><span style='background-color: #FF5722; color: white;'>\u00A0 Widget paint benchmark: Add RPB\u00A0 </span></p>
+      <p><span style='background-color: #0D47A1; color: white; margin:40px; '> \u00A0 Widget paint data:  Paint / Mark parent\u00A0 </span></p>
       </div>
  
 """;

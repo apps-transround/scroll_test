@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_html/style.dart';
 import 'package:scroll_test/paintEvent.dart';
 import 'package:scroll_test/render_object_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -46,7 +45,7 @@ class _DemoControlState extends State<DemoControl> {
                       items: LogLevel.values.map<DropdownMenuItem<LogLevel>>((LogLevel value) {
                         return DropdownMenuItem<LogLevel>(
                           value: value,
-                          child: Text((value.toString())),
+                          child: Text((value.toString().split('.')[1])),
                         );
                       }).toList(),
                       value: debugRepaintLogLevel,
@@ -69,17 +68,20 @@ class _DemoControlState extends State<DemoControl> {
             ],
           ),
           ExpansionTile(
-            title: Text('Instructions >'),
+            title: Text('Instructions'),
             initiallyExpanded: true,
             children: [
-              Html(
-                data: htmlData,
-                style: makeStyles(),
-                onLinkTap: (url, _, __, ___) {
-                  if (url != null) {
-                    _launchURL(url);
-                  }
-                },
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Html(
+                  data: htmlData,
+                  style: makeStyles(),
+                  onLinkTap: (url, _, __, ___) {
+                    if (url != null) {
+                      _launchURL(url);
+                    }
+                  },
+                ),
               ),
             ],
           ),

@@ -128,6 +128,9 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                                 ),
                               ],
                             ),
+                            SizedBox(
+                              height: 20,
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

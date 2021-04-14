@@ -95,7 +95,7 @@ class RenderObjectHelper {
           // print('Add RPB: ${renderObject.runtimeType}');
           paintIndicator(context, offset, value: 1);
           paintText(context, Offset(offset.dx, offset.dy - 10), 'Add RPB',
-              textColor: judgementColorMap[1] ?? Color(0xFFFF0000));
+              textColor: Colors.white, backgroundColor: judgementColorMap[1]!);
         }
       }
     }

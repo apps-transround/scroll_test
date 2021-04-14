@@ -17,11 +17,36 @@ const Map<PaintEventType, Color> colorsMap = {
 };
 
 const Map<int, Color> judgementColorMap = {
+  -2: Colors.grey,
+  -1: Colors.green,
+  0: Colors.grey,
   1: Colors.deepOrange,
   3: Colors.deepPurple,
   4: Colors.blue,
   5: Colors.amber,
   9: Colors.tealAccent,
+};
+
+const Map<int, String> judgementStringMap = {
+  -2: 'disabled',
+  -1: 'enabled',
+  0: 'NA',
+  1: 'Bad',
+  3: 'Poor',
+  4: 'Average',
+  5: 'Good',
+  9: 'Super',
+};
+
+const Map<int, String> judgementDescriptionMap = {
+  -2: 'Excluded from the measurement',
+  -1: 'Included in the measurement',
+  0: 'Not applicable or no data',
+  1: 'Bad',
+  3: 'Poor',
+  4: 'Average',
+  5: 'Good',
+  9: 'Super',
 };
 
 class PaintEventHandler {

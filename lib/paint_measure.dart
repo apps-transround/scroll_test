@@ -24,7 +24,6 @@ class PaintMeasure extends SingleChildRenderObjectWidget {
     Widget? child,
   }) : super(key: key, child: child);
 
-  /// The amount of space by which to inset the child.
   final bool measurePaint;
 
   @override

@@ -131,12 +131,9 @@ class _RotateTestState extends State<RotateTest> with TickerProviderStateMixin {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                PaintMeasure(
-                                  measurePaint: false,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(24.0),
-                                    child: PaintMeasure(measurePaint: false, child: Text('Without RepaintBoundary')),
-                                  ),
+                                Padding(
+                                  padding: const EdgeInsets.all(24.0),
+                                  child: Text('Without RepaintBoundary'),
                                 ),
                                 Center(
                                   child: SizedBox(

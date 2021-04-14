@@ -212,12 +212,12 @@
 //     if (child._needsPaint) {
 //       repaintCompositedChild(child, debugAlsoPaintedParent: true);
 //     } else {
+//       child.debugRegisterRepaintBoundaryPaint(
+//         includedParent: true,
+//         includedChild: false,
+//       );
 //       assert(() {
 //         // register the call for RepaintBoundary metrics
-//         child.debugRegisterRepaintBoundaryPaint(
-//           includedParent: true,
-//           includedChild: false,
-//         );
 //         child._layer!.debugCreator = child.debugCreator ?? child;
 //         return true;
 //       }());

@@ -94,7 +94,7 @@ class RenderObjectHelper {
         if (hasParentOf<RenderRepaintBoundary>(maxDistance: 4) == null) {
           // print('Add RPB: ${renderObject.runtimeType}');
           paintIndicator(context, offset, value: 1);
-          paintText(context, Offset(offset.dx, offset.dy - 10), 'Add RPB',
+          paintText(context, Offset(offset.dx, offset.dy - 0), 'Add RPB',
               textColor: Colors.white, backgroundColor: judgementColorMap[1]!);
         }
       }

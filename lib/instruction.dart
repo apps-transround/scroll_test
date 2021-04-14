@@ -4,7 +4,7 @@ import 'package:scroll_test/paintEvent.dart';
 
 String htmlData = """
 <h3>Render paint measurement and benchmarking experiment - Live intro</h3>
-  <p>This experiment is related to Flutter <a href='https://github.com'>issue 54821</a>  </p>
+  <p>This experiment is related to Flutter <a href='https://github.com/flutter/flutter/issues/80432'>issue 80432</a>  </p>
   
   <p>- It runs on a fork of the framework with some experimental paint event logging and in-place indicators added.</p> 
   <p>- The demo app is a normal Flutter app with standard widgets.</p>

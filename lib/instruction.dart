@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/style.dart';
+// import 'package:flutter_html/style.dart';
 import 'package:scroll_test/paintEvent.dart';
 
 String htmlData = """
@@ -33,16 +33,16 @@ String htmlData = """
  
 """;
 
-Map<String, Style> makeStyles() {
-  Map<String, Style> tmpStyles = Map();
-  judgementColorMap.forEach((key, value) {
-    tmpStyles['p.s${key.toString()}'] =
-        Style(border: Border.all(width: 2.0, color: value), width: 240, margin: EdgeInsets.only(left: 32));
-  });
-  tmpStyles['p.indent'] = Style(margin: EdgeInsets.only(left: 32));
-  tmpStyles['div.indent'] = Style(margin: EdgeInsets.only(left: 32), padding: EdgeInsets.symmetric(horizontal: 16));
-  return tmpStyles;
-}
+// Map<String, Style> makeStyles() {
+//   Map<String, Style> tmpStyles = Map();
+//   judgementColorMap.forEach((key, value) {
+//     tmpStyles['p.s${key.toString()}'] =
+//         Style(border: Border.all(width: 2.0, color: value), width: 240, margin: EdgeInsets.only(left: 32));
+//   });
+//   tmpStyles['p.indent'] = Style(margin: EdgeInsets.only(left: 32));
+//   tmpStyles['div.indent'] = Style(margin: EdgeInsets.only(left: 32), padding: EdgeInsets.symmetric(horizontal: 16));
+//   return tmpStyles;
+// }
 
 String makeExplanation() {
   String explanation = '';
@@ -52,9 +52,9 @@ String makeExplanation() {
   return explanation;
 }
 
-var style = {
-  "p.red": Style(
-    width: 150,
-    border: Border.all(width: 2.0, color: const Color(0xFFFF0000)),
-  ),
-};
+// var style = {
+//   "p.red": Style(
+//     width: 150,
+//     border: Border.all(width: 2.0, color: const Color(0xFFFF0000)),
+//   ),
+// };

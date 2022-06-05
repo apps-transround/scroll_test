@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
+// import 'package:flutter_html/flutter_html.dart';
 import 'package:scroll_test/paintEvent.dart';
 import 'package:scroll_test/render_object_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -39,7 +39,7 @@ class _DemoControlState extends State<DemoControl> {
                     child: DropdownButton<LogLevel>(
                       onChanged: (value) {
                         setState(() {
-                          debugRepaintLogLevel = value ?? LogLevel.indicator;
+                          RenderObjectHelper.debugRepaintLogLevel = value ?? LogLevel.indicator;
                         });
                       },
                       items: LogLevel.values.map<DropdownMenuItem<LogLevel>>((LogLevel value) {
@@ -48,7 +48,7 @@ class _DemoControlState extends State<DemoControl> {
                           child: Text((value.toString().split('.')[1])),
                         );
                       }).toList(),
-                      value: debugRepaintLogLevel,
+                      value: RenderObjectHelper.debugRepaintLogLevel,
                     ),
                   ),
                 ],
@@ -73,15 +73,15 @@ class _DemoControlState extends State<DemoControl> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Html(
-                  data: htmlData,
-                  style: makeStyles(),
-                  onLinkTap: (url, _, __, ___) {
-                    if (url != null) {
-                      _launchURL(url);
-                    }
-                  },
-                ),
+                // child: Html(
+                //   data: htmlData,
+                //   style: makeStyles(),
+                //   onLinkTap: (url, _, __, ___) {
+                //     if (url != null) {
+                //       _launchURL(url);
+                //     }
+                //   },
+                // ),
               ),
             ],
           ),

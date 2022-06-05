@@ -4,15 +4,17 @@ import 'package:scroll_test/paintEvent.dart';
 import 'package:scroll_test/render_object_helper.dart';
 import 'package:scroll_test/rotate.dart';
 import 'package:scroll_test/scroll.dart';
+import 'package:scroll_test/scroll_long.dart';
 import 'package:scroll_test/two_way_scroll_widget.dart';
 
 void main() {
   // debugPaintLayerBordersEnabled = true;
-  debugRepaintRainbowEnabled = true;
-  debugRepaintLogLevel = LogLevel.benchmark;
+  debugRepaintRainbowEnabled = false;
+  RenderObjectHelper.debugRepaintLogLevel = LogLevel.full;
   runApp(
     MaterialApp(
-      home: RotateTest(),
+      // home: RotateTest(),
+      home: ScrollLong(),
       // home: ScrollPaintTest(),
       //   home: RainbowShamer(),
       debugShowCheckedModeBanner: false,

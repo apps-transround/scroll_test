@@ -7,8 +7,10 @@ import 'render_paint_measure.dart';
 enum LogLevel { full, benchmark, indicator }
 
 class RenderObjectHelper {
-  RenderObject renderObject;
   static const int keepPaint = 24;
+  static LogLevel debugRepaintLogLevel = LogLevel.benchmark;
+
+  RenderObject renderObject;
   List<PaintEvent> paintEvents = [];
   double delta = 0;
 

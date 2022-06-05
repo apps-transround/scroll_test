@@ -10,7 +10,7 @@ class TwoWayScroll extends StatelessWidget {
   final ScrollController? scrollController;
 
   const TwoWayScroll(
-      {Key? key, this.child, this.rowCount = 30, this.columnCount = 30, this.fancy = true, this.scrollController})
+      {Key? key, this.child, this.rowCount = 30, this.columnCount = 20, this.fancy = true, this.scrollController})
       : super(key: key);
 
   @override
